@@ -81,6 +81,7 @@ export default {
 		position: absolute;
 		bottom: 10px;
 		right: -48px;
+		z-index: 10;
 
 		.el-button {
 			padding: 4px 10px;

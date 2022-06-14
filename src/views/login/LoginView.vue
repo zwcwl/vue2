@@ -39,7 +39,10 @@ export default {
 				await this.$refs.ruleForm.validate()
 				let data = await this.$api.login({data:this.user})
 				console.log(data);
+				if(data.Token){
 				localStorage.setItem("TOKEN",data.Token)
+				this.$router.push("/")
+				}
 			} catch (error) {
 				console.log(error)
 			}

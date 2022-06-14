@@ -1,5 +1,5 @@
 <template>
-	<div id="hello-view">
+	<div id="hello-view" @click="test">
 		<div class="title">
 			欢迎来到我的王国
 		</div>
@@ -8,7 +8,12 @@
 
 <script>
 export default {
-	name:"HelloView"
+	name:"HelloView",
+	methods:{
+		test(){
+			this.$api.test({}).then(val=>{console.log(val);})
+		}
+	}
 }
 </script>
 

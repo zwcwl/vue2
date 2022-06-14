@@ -6,6 +6,13 @@ function login(options){
 	return request(options)
 }
 
+function test(options){
+	options.method="get"
+	options.url="/test"
+	return request(options)
+}
+
 export default {
-	login
+	login,
+	test
 }

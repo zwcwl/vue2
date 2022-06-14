@@ -12,9 +12,8 @@ let instance = axios.create({
 instance.interceptors.request.use(
 	config => {
 		let result=localStorage.getItem("TOKEN")
-		console.log(result)
 		if(result){
-			config.headers.Authorization=result
+			config.headers.authorization=result
 		}
 		return config;
 	},

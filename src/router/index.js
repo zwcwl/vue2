@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router"
 
-import storage from "@/utils/storage"
 
 Vue.use(VueRouter)
 
@@ -22,6 +21,10 @@ let routes=[
 	{
 		path:"/login",
 		component:()=>import("@/views/login/LoginView")
+	},
+	{
+		path:"*",
+		component:()=>import("@/views/404/NotView")
 	}
 ]
 
@@ -32,9 +35,8 @@ let router = new VueRouter({
 
 let auth={
 	loggedIn(){
-		let val=storage.getAll("TOKEN")
-		console.log(JSON.stringify(val) === "[]");
-		return storage.getAll("TOKEN")
+		let val=localStorage.getItem("TOKEN")
+		return val
 	}
 }
 
@@ -42,7 +44,8 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requestAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    if (auth.loggedIn()) {
+	console.log(auth.loggedIn());
+    if (!auth.loggedIn()) {
       next({
         path: '/login'
       })
