@@ -1,13 +1,28 @@
-let storage={
+let storage= {
+	getItem(key,item){
+			let obj=this.getAll(key);
+			return obj[item];
+	},
+	setItem(key,data){
+			let obj=this.getAll();
+			window.localStorage.setItem(key,JSON.stringify({...data,...obj}));
+			return "添加成功";
+	},
+	replaceItem(key,data){
+			window.localStorage.setItem(key,JSON.stringify(data));
+			return "替换成功";
+	},
 	getAll(key){
-		let val=localStorage.getItem(key) || "[]"
-		return JSON.parse(val)
+			return JSON.parse(window.localStorage.getItem(key) || "{}");
 	},
-	setItem(key,value){
-		let val=this.getAll()
-		val[key]=value
-		localStorage.setItem("TOKEN",JSON.stringify(val))
+	removeItem(key,item){
+			let obj=this.getAll();
+			delete obj[item];
+			window.localStorage.setItem(key,JSON.stringify(obj));
 	},
+	removeAll(key){
+			window.localStorage.removeItem(key);
+	}
 }
 
 export default storage

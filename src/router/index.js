@@ -4,57 +4,56 @@ import VueRouter from "vue-router"
 
 Vue.use(VueRouter)
 
-let routes=[
+let routes = [
 	{
-		path:"",
-		meta:{
-			requestAuth:true
+		path: "",
+		meta: {
+			requestAuth: true
 		},
-		component:()=>import("@/views/home/HomeView"),
-		children:[
+		component: () => import("@/views/home/HomeView"),
+		children: [
 			{
-				path:"",
-				component:()=>import("@/views/hello/HelloView")
+				path: "",
+				component: () => import("@/views/hello/HelloView")
 			}
 		]
 	},
 	{
-		path:"/login",
-		component:()=>import("@/views/login/LoginView")
+		path: "/login",
+		component: () => import("@/views/login/LoginView")
 	},
 	{
-		path:"*",
-		component:()=>import("@/views/404/NotView")
+		path: "*",
+		component: () => import("@/views/404/NotView")
 	}
 ]
 
 let router = new VueRouter({
 	routes,
-	mode:"history"
+	mode: "history"
 })
 
-let auth={
-	loggedIn(){
-		let val=localStorage.getItem("TOKEN")
+//判断token是否存在
+let auth = {
+	loggedIn () {
+		let val = localStorage.getItem("TOKEN")
 		return val
 	}
 }
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requestAuth)) {
-    // this route requires auth, check if logged in
-    // if not, redirect to login page.
-	console.log(auth.loggedIn());
-    if (!auth.loggedIn()) {
-      next({
-        path: '/login'
-      })
-    } else {
-      next()
-    }
-  } else {
-    next() // 确保一定要调用 next()
-  }
+	if (to.matched.some(record => record.meta.requestAuth)) {
+
+		if (!auth.loggedIn()) {
+			next({
+				path: '/login'
+			})
+		} else {
+			next()
+		}
+	} else {
+		next()
+	}
 })
 
 export default router

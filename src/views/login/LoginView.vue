@@ -11,43 +11,43 @@
 				<el-button type="primary" @click="submitForm">提交</el-button>
 				<el-button @click="resetForm">重置</el-button>
 			</el-form-item>
-		</el-form>	
+		</el-form>
 	</div>
 </template>
 
 <script>
 export default {
-	data(){
+	data () {
 		return {
-			user:{
-				username:"",
-				userpwd:""
+			user: {
+				username: "",
+				userpwd: ""
 			},
-			rules:{
-				username:[
-					{required:true,message:"请输入账号",trigger:"blur"}
+			rules: {
+				username: [
+					{ required: true, message: "请输入账号", trigger: "blur" }
 				],
-				userpwd:[
-					{required:true,message:"请输入账号",trigger:"blur"}
+				userpwd: [
+					{ required: true, message: "请输入账号", trigger: "blur" }
 				]
 			}
 		}
 	},
-	methods:{
-		async submitForm(){
+	methods: {
+		async submitForm () {
 			try {
 				await this.$refs.ruleForm.validate()
-				let data = await this.$api.login({data:this.user})
-				console.log(data);
-				if(data.Token){
-				localStorage.setItem("TOKEN",data.Token)
-				this.$router.push("/")
+				let data = await this.$api.login(this.user)
+				console.log(111,data);
+				if (data.token) {
+					this.$storage.replaceItem("TOKEN", data)
+					this.$router.push("/")
 				}
 			} catch (error) {
 				console.log(error)
 			}
 		},
-		resetForm(){
+		resetForm () {
 			this.$refs.ruleForm.resetFields()
 		}
 	}
@@ -55,21 +55,22 @@ export default {
 </script>
 
 <style lang="scss">
-	#login-view{
-		height: 100%;
-		background-color: #ccc;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+#login-view {
+	height: 100%;
+	background-color: #ccc;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
-		.el-form{
-			width: 260px;
-			padding: 20px;
-			background-color: #fff;
-			border-radius: 6px;
-			.el-form-item:last-child{
-				margin-bottom: 0;
-			}
+	.el-form {
+		width: 260px;
+		padding: 20px;
+		background-color: #fff;
+		border-radius: 6px;
+
+		.el-form-item:last-child {
+			margin-bottom: 0;
 		}
 	}
+}
 </style>

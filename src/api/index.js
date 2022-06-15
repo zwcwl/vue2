@@ -1,15 +1,11 @@
 import request from "@/utils/request"
 
 function login(options){
-	options.method="post"
-	options.url="/login"
-	return request(options)
+	return request.post("/login",options)
 }
 
 function test(options){
-	options.method="get"
-	options.url="/test"
-	return request(options)
+	return request.get("/test",options)
 }
 
 export default {
