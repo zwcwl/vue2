@@ -51,19 +51,26 @@ let router = new VueRouter({
 	mode: "history"
 })
 
-//判断token是否存在
+//每次路由跳转时，都进行验证token是否正确
 let auth = {
-	async loggedIn () {
-		let val = localStorage.getItem("TOKEN")
-		let result = await Vue.prototype.$api.ferify()
-		return val && result
+	async loggedIn() {
+		try {
+			//获取本地token
+			let val = localStorage.getItem("TOKEN")
+			//服务器验证token
+			let result = await Vue.prototype.$api.ferify()
+			return Promise.resolve(val && result)
+		} catch (error) {
+			console.log(error);
+		}
 	}
 }
 
-router.beforeEach((to, from, next) => {
+//全局路由守卫
+router.beforeEach(async (to, from, next) => {
 	if (to.matched.some(record => record.meta.requestAuth)) {
-
-		if (!auth.loggedIn()) {
+		let result = await auth.loggedIn()
+		if (!result) {
 			next({
 				path: '/login',
 				replace: true
@@ -71,9 +78,19 @@ router.beforeEach((to, from, next) => {
 		} else {
 			next()
 		}
-	} else {
-		next()
-	}
+} else {
+	next()
+}
 })
+
+//配置路由重复跳转报错问题
+const originalPush = VueRouter.prototype.push
+const originalReplace = VueRouter.prototype.replace
+VueRouter.prototype.push = function push(location) {
+	return originalPush.call(this, location).catch(err => err)
+}
+VueRouter.prototype.push = function push(location) {
+	return originalReplace.call(this, location).catch(err => err)
+}
 
 export default router

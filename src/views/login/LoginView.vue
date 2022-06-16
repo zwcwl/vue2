@@ -40,7 +40,9 @@ export default {
 				let data = await this.$api.login(this.user)
 				if (data.token) {
 					this.$storage.replaceItem("TOKEN", data)
-					this.$router.replace("/")
+					// setTimeout(()=>{
+						this.$router.replace("/")
+					// },2000)
 				}
 			} catch (error) {
 				console.log(error)
