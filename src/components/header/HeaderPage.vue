@@ -4,6 +4,7 @@
 			<div class="spread-shrink" @click="cutSpread">
 				<el-button type="primary" :icon="isSpread ? 'el-icon-s-unfold' : 'el-icon-s-fold'"></el-button>
 			</div>
+			<bread-page></bread-page>
 		</div>
 		<div class="rt-container">
 			<div class="user-utils">
@@ -12,11 +13,8 @@
 						<img src="@/assets/images/logo.png" alt="">
 					</div>
 					<el-dropdown-menu slot="dropdown">
-						<el-dropdown-item>黄金糕</el-dropdown-item>
-						<el-dropdown-item>狮子头</el-dropdown-item>
-						<el-dropdown-item>螺蛳粉</el-dropdown-item>
-						<el-dropdown-item disabled>双皮奶</el-dropdown-item>
-						<el-dropdown-item divided>蚵仔煎</el-dropdown-item>
+						<el-dropdown-item @click.native="setting">设置</el-dropdown-item>
+						<el-dropdown-item @click.native="logOut">退出登入</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
 			</div>
@@ -25,14 +23,31 @@
 </template>
 
 <script>
+import storage from '@/utils/storage'
 import { mapState, mapMutations } from 'vuex'
+import BreadPage from "@/components/header/BreadPage.vue"
+
 export default {
 	name: "HeaderPage",
 	methods: {
-		...mapMutations(["cutSpread"])
+		...mapMutations(["cutSpread"]),
+		logOut () {
+			storage.removeKey("TOKEN")
+			this.$message({
+				message: '成功退出登入',
+				type: 'success'
+			});
+			this.$router.replace("/login")
+		},
+		setting () {
+			this.$router.replace("/setting")
+		},
 	},
 	computed: {
 		...mapState(["isSpread"])
+	},
+	components:{
+		BreadPage
 	}
 }
 </script>
@@ -49,6 +64,8 @@ export default {
 		align-items: center;
 
 		.spread-shrink {
+			margin-right: 20px;
+
 			.el-button {
 				font-size: 26px;
 				padding: 4px 10px;
@@ -56,17 +73,19 @@ export default {
 		}
 	}
 
-	.rt-container{
+	.rt-container {
 		display: flex;
 		align-items: center;
-		.user-utils{
-			.user-img{
+
+		.user-utils {
+			.user-img {
 				width: 42px;
 				height: 42px;
 				border-radius: 50%;
 				overflow: hidden;
 				background-color: #fff;
-				img{
+
+				img {
 					width: 100%;
 				}
 			}

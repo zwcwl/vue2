@@ -19,9 +19,11 @@ let storage= {
 			let obj=this.getAll();
 			delete obj[item];
 			window.localStorage.setItem(key,JSON.stringify(obj));
+			return "删除成功"
 	},
-	removeAll(key){
+	removeKey(key){
 			window.localStorage.removeItem(key);
+			return "删除成功"
 	}
 }
 

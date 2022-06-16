@@ -13,7 +13,6 @@ let instance = axios.create({
 instance.interceptors.request.use(
 	config => {
 		let result=storage.getItem("TOKEN","token")
-		console.log(result);
 		if(result){
 			config.headers.authorization=result
 		}
@@ -32,7 +31,7 @@ instance.interceptors.response.use(
 		if(code>=200 && code < 300){
 			return data
 		}else if(code <= 300){
-			return response.data.msg
+			return Promise.reject(msg)
 		}
 	},
 	error=>{

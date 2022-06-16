@@ -8,7 +8,12 @@ function test(options){
 	return request.get("/test",options)
 }
 
+function ferify(options){
+	return request.get("/ferify",options)
+}
+
 export default {
 	login,
-	test
+	test,
+	ferify
 }

@@ -38,10 +38,9 @@ export default {
 			try {
 				await this.$refs.ruleForm.validate()
 				let data = await this.$api.login(this.user)
-				console.log(111,data);
 				if (data.token) {
 					this.$storage.replaceItem("TOKEN", data)
-					this.$router.push("/")
+					this.$router.replace("/")
 				}
 			} catch (error) {
 				console.log(error)
