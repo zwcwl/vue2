@@ -7,6 +7,11 @@
 			<bread-page></bread-page>
 		</div>
 		<div class="rt-container">
+			<div class="user-info">
+				<el-badge :value="200" :max="99" class="item">
+					<el-button><i class="el-icon-bell"></i></el-button>
+				</el-badge>
+			</div>
 			<div class="user-utils">
 				<el-dropdown trigger="click" style="display:block;">
 					<div class="el-dropdown-link user-img">
@@ -42,11 +47,14 @@ export default {
 		setting () {
 			this.$router.replace("/setting")
 		},
+		aaa(key){
+			console.log(key);
+		}
 	},
 	computed: {
 		...mapState(["isSpread"])
 	},
-	components:{
+	components: {
 		BreadPage
 	}
 }
@@ -77,13 +85,26 @@ export default {
 		display: flex;
 		align-items: center;
 
+		.user-info{
+			.el-badge{
+				.el-button{
+					font-size: 26px;
+					padding: 4px 10px;
+				}
+				.el-badge__content.is-fixed{
+					right: 26px;
+				}
+			}
+		}
+
 		.user-utils {
+			margin-left: 20px;
 			.user-img {
 				width: 42px;
 				height: 42px;
 				border-radius: 50%;
 				overflow: hidden;
-				background-color: #fff;
+				background-color: #ccc;
 
 				img {
 					width: 100%;

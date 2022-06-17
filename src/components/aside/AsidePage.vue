@@ -1,38 +1,38 @@
 <template>
 	<div id="aside-page">
 		<div class="title">
+			<div class="logo">
+				<img src="@/assets/images/logo.png" alt="">
+			</div>
 			<h2>hello</h2>
 		</div>
-		<el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isSpread">
+		<el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isSpread" background-color="#545c64" text-color="#fff">
 			<el-submenu index="1">
 				<template slot="title">
 					<i class="el-icon-location"></i>
-					<span slot="title">导航一</span>
+					<span slot="title">系统管理</span>
 				</template>
 				<el-menu-item-group>
-					<span slot="title">分组一</span>
-					<el-menu-item index="1-1">选项1</el-menu-item>
-					<el-menu-item index="1-2">选项2</el-menu-item>
+					<el-menu-item index="1-1">用户管理</el-menu-item>
+					<el-menu-item index="1-2">菜单管理</el-menu-item>
+					<el-menu-item index="1-3">角色管理</el-menu-item>
+					<el-menu-item index="1-3">部门管理</el-menu-item>
 				</el-menu-item-group>
-				<el-menu-item-group title="分组2">
-					<el-menu-item index="1-3">选项3</el-menu-item>
+			</el-submenu>
+			<el-submenu index="2">
+				<template slot="title">
+					<i class="el-icon-location"></i>
+					<span slot="title">审批管理</span>
+				</template>
+				<el-menu-item-group>
+					<el-menu-item index="2-1">选项1</el-menu-item>
+					<el-menu-item index="2-2">选项2</el-menu-item>
+					<el-menu-item index="2-3">选项3</el-menu-item>
 				</el-menu-item-group>
-				<el-submenu index="1-4">
-					<span slot="title">选项4</span>
-					<el-menu-item index="1-4-1">选项1</el-menu-item>
-				</el-submenu>
 			</el-submenu>
 			<el-menu-item index="2">
 				<i class="el-icon-menu"></i>
 				<span slot="title">导航二</span>
-			</el-menu-item>
-			<el-menu-item index="3" disabled>
-				<i class="el-icon-document"></i>
-				<span slot="title">导航三</span>
-			</el-menu-item>
-			<el-menu-item index="4">
-				<i class="el-icon-setting"></i>
-				<span slot="title">导航四</span>
 			</el-menu-item>
 		</el-menu>
 		<div class="spread-shrink" @click="cutSpread">
@@ -66,7 +66,20 @@ export default {
 
 	.title{
 		height: 60px;
+		color: #fff;
+		background-color: #545c64;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		overflow: hidden;
 
+		.logo{
+			width: 64px;
+			height: 60px;
+			img{
+				height: 100%;
+			}
+		}
 		h2{
 			line-height: 60px;
 		}

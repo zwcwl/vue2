@@ -1,6 +1,6 @@
 <template>
-	<div id="hello-view" @click="test">
-		<div class="title">
+	<div id="hello-view">
+		<div class="title" @click="test">
 			欢迎来到我的王国
 		</div>
 	</div>
@@ -21,7 +21,7 @@ export default {
 #hello-view{
 	position: relative;
 	height: 100%;
-	background-image: url("../../assets/images/yuner.jpg");
+	background-image: url("../../assets/images/yuner.webp");
 	background-position: center 0;
 	background-size: cover;
 	background-repeat: no-repeat;

@@ -35,6 +35,7 @@ instance.interceptors.response.use(
 		}
 	},
 	error=>{
+		console.log(54);
 		return Promise.reject(error)
 	}
 )

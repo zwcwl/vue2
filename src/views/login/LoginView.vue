@@ -2,10 +2,10 @@
 	<div id="login-view">
 		<el-form :model="user" status-icon :rules="rules" ref="ruleForm">
 			<el-form-item prop="username">
-				<el-input type="password" v-model="user.username" autocomplete="off" placeholder="请输入账号"></el-input>
+				<el-input type="text" v-model="user.username" placeholder="请输入账号"></el-input>
 			</el-form-item>
 			<el-form-item prop="userpwd">
-				<el-input type="password" v-model="user.userpwd" autocomplete="off" placeholder="请输入密码"></el-input>
+				<el-input type="password" v-model="user.userpwd" placeholder="请输入密码"></el-input>
 			</el-form-item>
 			<el-form-item>
 				<el-button type="primary" @click="submitForm">提交</el-button>

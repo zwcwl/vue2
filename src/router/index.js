@@ -53,13 +53,19 @@ let router = new VueRouter({
 
 //每次路由跳转时，都进行验证token是否正确
 let auth = {
-	async loggedIn() {
+	async loggedIn () {
 		try {
 			//获取本地token
 			let val = localStorage.getItem("TOKEN")
-			//服务器验证token
-			let result = await Vue.prototype.$api.ferify()
-			return Promise.resolve(val && result)
+			if (val) {
+				//服务器验证token
+				let result = await Vue.prototype.$api.ferify()
+
+				//判断本地和服务器验证是否都通过
+				return Promise.resolve(result)
+			}else{
+				return false
+			}
 		} catch (error) {
 			console.log(error);
 		}
@@ -70,6 +76,7 @@ let auth = {
 router.beforeEach(async (to, from, next) => {
 	if (to.matched.some(record => record.meta.requestAuth)) {
 		let result = await auth.loggedIn()
+		console.log(result);
 		if (!result) {
 			next({
 				path: '/login',
@@ -78,18 +85,28 @@ router.beforeEach(async (to, from, next) => {
 		} else {
 			next()
 		}
-} else {
-	next()
-}
+	} else if (to.path === "/login") {
+		let result = await auth.loggedIn()
+		if (result) {
+			next({
+				path: '/',
+				replace: true
+			})
+		} else {
+			next()
+		}
+	} else {
+		next()
+	}
 })
 
 //配置路由重复跳转报错问题
 const originalPush = VueRouter.prototype.push
 const originalReplace = VueRouter.prototype.replace
-VueRouter.prototype.push = function push(location) {
+VueRouter.prototype.push = function push (location) {
 	return originalPush.call(this, location).catch(err => err)
 }
-VueRouter.prototype.push = function push(location) {
+VueRouter.prototype.replace = function replace (location) {
 	return originalReplace.call(this, location).catch(err => err)
 }
 

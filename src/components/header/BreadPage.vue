@@ -44,7 +44,7 @@ export default {
 <style lang="scss">
 #bread-page {
 	.el-breadcrumb {
-		font-size: 20px;
+		font-size: 18px;
 
 		.el-breadcrumb__item{
 			i{
