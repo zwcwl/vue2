@@ -7,7 +7,7 @@ let envConfig={
 	},
 	development:{
 		baseApi:"/api",
-		mockApi:"http://127.0.0.1:4523/m1/410799-0-default/api"
+		mockApi:"http://127.0.0.1:4523/m1/1146360-0-default/api"
 	},
 	test:{
 		baseApi:"",
@@ -17,6 +17,6 @@ let envConfig={
 
 export default {
 	env,
-	mock:false,
+	mock:true,
 	...envConfig[env]
 }

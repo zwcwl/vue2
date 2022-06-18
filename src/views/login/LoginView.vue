@@ -8,8 +8,8 @@
 				<el-input type="password" v-model="user.userpwd" placeholder="请输入密码"></el-input>
 			</el-form-item>
 			<el-form-item>
-				<el-button type="primary" @click="submitForm">提交</el-button>
-				<el-button @click="resetForm">重置</el-button>
+				<el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+				<el-button @click="resetForm('ruleForm')">重置</el-button>
 			</el-form-item>
 		</el-form>
 	</div>
@@ -34,22 +34,22 @@ export default {
 		}
 	},
 	methods: {
-		async submitForm () {
+		async submitForm (formName) {
 			try {
-				await this.$refs.ruleForm.validate()
-				let data = await this.$api.login(this.user)
-				if (data.token) {
-					this.$storage.replaceItem("TOKEN", data)
-					// setTimeout(()=>{
-						this.$router.replace("/")
-					// },2000)
+				await this.$refs[formName].validate()
+				let result = await this.$api.login(this.user)
+        console.log("🚀 ~ file: LoginView.vue ~ line 41 ~ submitForm ~ result", result)
+				if (result) {
+					this.$store.commit("addUserInfo",result.data)
+					this.$router.replace("/")
 				}
 			} catch (error) {
-				console.log(error)
+        console.log("🚀 ~ file: LoginView.vue ~ line 46 ~ submitForm ~ error", error)
 			}
 		},
-		resetForm () {
-			this.$refs.ruleForm.resetFields()
+		resetForm (formName) {
+			console.log(this.$refs);
+			this.$refs[formName].resetFields()
 		}
 	}
 }

@@ -1,9 +1,6 @@
 <template>
 	<div id="aside-page">
 		<div class="title">
-			<div class="logo">
-				<img src="@/assets/images/logo.png" alt="">
-			</div>
 			<h2>hello</h2>
 		</div>
 		<el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isSpread" background-color="#545c64" text-color="#fff">
@@ -13,7 +10,7 @@
 					<span slot="title">系统管理</span>
 				</template>
 				<el-menu-item-group>
-					<el-menu-item index="1-1">用户管理</el-menu-item>
+					<el-menu-item index="1-1" @click="$router.replace('/manage')">用户管理</el-menu-item>
 					<el-menu-item index="1-2">菜单管理</el-menu-item>
 					<el-menu-item index="1-3">角色管理</el-menu-item>
 					<el-menu-item index="1-3">部门管理</el-menu-item>
@@ -68,18 +65,7 @@ export default {
 		height: 60px;
 		color: #fff;
 		background-color: #545c64;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		overflow: hidden;
-
-		.logo{
-			width: 64px;
-			height: 60px;
-			img{
-				height: 100%;
-			}
-		}
+		
 		h2{
 			line-height: 60px;
 		}

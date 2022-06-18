@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router"
+import storage from "@/utils/storage"
 
 // import $api from "@/api"
 
@@ -31,17 +32,32 @@ let routes = [
 					name: "设置"
 				},
 				component: () => import("@/views/main/SettingView")
+			},
+			{
+				path:"manage",
+				name:"ManageView",
+				meta:{
+					requestAuth: true,
+					name: "管理"
+				},
+				component:()=>import("@/views/main/ManageView")
 			}
 		]
 	},
 	{
-		path: "/login",
+		path: "/user/login",
 		name: "LoginView",
+		meta: {
+			name: "登入",
+		},
 		component: () => import("@/views/login/LoginView")
 	},
 	{
 		path: "*",
 		name: "NotView",
+		meta: {
+			name: "首页",
+		},
 		component: () => import("@/views/404/NotView")
 	}
 ]
@@ -53,45 +69,16 @@ let router = new VueRouter({
 
 //每次路由跳转时，都进行验证token是否正确
 let auth = {
-	async loggedIn () {
-		try {
-			//获取本地token
-			let val = localStorage.getItem("TOKEN")
-			if (val) {
-				//服务器验证token
-				let result = await Vue.prototype.$api.ferify()
-
-				//判断本地和服务器验证是否都通过
-				return Promise.resolve(result)
-			}else{
-				return false
-			}
-		} catch (error) {
-			console.log(error);
-		}
+	token () {
+		return JSON.stringify(storage.getAll("TOKEN")) === "{}"
 	}
 }
 
 //全局路由守卫
-router.beforeEach(async (to, from, next) => {
+router.beforeEach((to, from, next) => {
 	if (to.matched.some(record => record.meta.requestAuth)) {
-		let result = await auth.loggedIn()
-		console.log(result);
-		if (!result) {
-			next({
-				path: '/login',
-				replace: true
-			})
-		} else {
-			next()
-		}
-	} else if (to.path === "/login") {
-		let result = await auth.loggedIn()
-		if (result) {
-			next({
-				path: '/',
-				replace: true
-			})
+		if (auth.token()) {
+			next({path: '/user/login'},{replace: true})
 		} else {
 			next()
 		}

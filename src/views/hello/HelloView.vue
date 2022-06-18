@@ -8,17 +8,20 @@
 
 <script>
 export default {
-	name:"HelloView",
-	methods:{
-		test(){
-			this.$api.test({}).then(val=>{console.log(val);})
+	name: "HelloView",
+	methods: {
+		test () {
+			this.$api.test({})
+				.then(val => {
+					console.log("🚀 ~ file: HelloView.vue ~ line 16 ~ test ~ val", val)
+				})
 		}
 	}
 }
 </script>
 
 <style lang="scss">
-#hello-view{
+#hello-view {
 	position: relative;
 	height: 100%;
 	background-image: url("../../assets/images/yuner.webp");
@@ -26,7 +29,7 @@ export default {
 	background-size: cover;
 	background-repeat: no-repeat;
 
-	.title{
+	.title {
 		position: absolute;
 		top: 100px;
 		left: 100px;
