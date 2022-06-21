@@ -39,12 +39,11 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
 	//响应成功的数据
 	response => {
-		console.log("🚀 ~ file: request.js ~ line 42 ~ response", response)
-		let { code, msg } = response.data
+		let { code, msg , data } = response.data
 
 		//判断当状态为200时表示响应成功
 		if (code === 200) {
-			return Promise.resolve(response.data)
+			return Promise.resolve(data)
 		} else {
 				//账号密码错误
 			if (code === 30001) {

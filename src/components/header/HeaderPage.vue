@@ -47,6 +47,14 @@ export default {
 				this.$store.commit("delUserInfo")
 				this.$router.replace("/user/login")
 			}
+		},
+		async getMenuList () {
+			try {
+				let result = await this.$api.getMenuList()
+				this.count = result
+			} catch (error) {
+
+			}
 		}
 	},
 	computed: {
@@ -55,13 +63,8 @@ export default {
 	components: {
 		BreadPage
 	},
-	async mounted () {
-		try {
-			let result=await this.$api.leave()
-			this.count=result.data
-		} catch (error) {
-			
-		}
+	mounted () {
+		this.getMenuList()
 	}
 }
 </script>

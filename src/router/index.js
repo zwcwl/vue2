@@ -38,7 +38,7 @@ let routes = [
 				name:"ManageView",
 				meta:{
 					requestAuth: true,
-					name: "管理"
+					name: "用户管理"
 				},
 				component:()=>import("@/views/main/ManageView")
 			}

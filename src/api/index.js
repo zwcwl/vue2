@@ -1,19 +1,28 @@
 import request from "@/utils/request"
 
-function login(options={}){
-	return request.post("/user/login",options)
+//登入
+function login(params={}){
+	return request.post("/users/login",params)
 }
 
-function test(options={}){
-	return request.get("/test",options)
+//获取菜单项
+function noticeCount(params={}){
+	return request.get("/leave/count",params)
 }
 
-function leave(options={}){
-	return request.get("/leave/count",options)
+//获取菜单列表
+function getMenuList(params={}){
+	return request.get("/menu/list",params)
+}
+
+//获取用户列表
+function getUserList(params={}){
+	return request.get("/users/list",params)
 }
 
 export default {
 	login,
-	test,
-	leave
+	noticeCount,
+	getMenuList,
+	getUserList
 }

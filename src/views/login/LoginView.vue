@@ -40,7 +40,7 @@ export default {
 				let result = await this.$api.login(this.user)
         console.log("🚀 ~ file: LoginView.vue ~ line 41 ~ submitForm ~ result", result)
 				if (result) {
-					this.$store.commit("addUserInfo",result.data)
+					this.$store.commit("addUserInfo",result)
 					this.$router.replace("/")
 				}
 			} catch (error) {
