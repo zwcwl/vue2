@@ -28,14 +28,16 @@
 					<el-button type="primary">添加</el-button>
 					<el-button type="danger" @click="handlePatchDel">批量删除</el-button>
 				</div>
-				<el-table @selection-change="handleSelectionChange" ref="multipleTable" :data="userList"
-					tooltip-effect="dark" style="width: 100%" stripe border>
-					<el-table-column type="selection" width="46">
-					</el-table-column>
+
+				<el-table @selection-change="handleSelectionChange" ref="multipleTable" :data="userList" tooltip-effect="dark"
+					style="width: 100%" stripe border>
+					<el-table-column type="selection" width="46"></el-table-column>
+
 					<el-table-column v-for="item in columns" :key="item.prop" :label="item.label" :prop="item.prop"
 						:formatter="item.formatter" :width="item.width">
 					</el-table-column>
-					<el-table-column label="操作">
+
+					<el-table-column label="操作" width="143px">
 						<template slot-scope="scope">
 							<el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
 							<el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
@@ -43,22 +45,26 @@
 						</template>
 					</el-table-column>
 				</el-table>
-				<el-pagination background layout="prev, pager, next" :total="pager.total"
-					@current-change="handelCurrentChange"></el-pagination>
+
+				<el-pagination background layout="prev, pager, next" :total="pager.total" @current-change="handelCurrentChange">
+				</el-pagination>
 			</div>
 		</div>
+
+		<add-form-page></add-form-page>
 	</div>
 </template>
 
 <script>
+import AddFormPage from "@/components/main/AddFormPage.vue"
 export default {
 	name: "ManageView",
-	data() {
+	data () {
 		return {
 			user: {
 				userName: "",
 				userId: "",
-				userState: 1
+				userState: 0
 			},
 			userList: [],
 			columns: [
@@ -79,8 +85,8 @@ export default {
 				{
 					label: "用户角色",
 					prop: "role",
-					width: "60px",
-					formatter(row, column, value) {
+					width: "80px",
+					formatter (row, column, value) {
 						return {
 							0: "管理员",
 							1: "普通用户"
@@ -90,12 +96,12 @@ export default {
 				{
 					label: "用户状态",
 					prop: "state",
-					width: "60px",
-					formatter(row, column, value) {
+					width: "80px",
+					formatter (row, column, value) {
 						return {
 							1: "在职",
 							2: "离职",
-							3:"试用期"
+							3: "试用期"
 						}[value]
 					}
 				},
@@ -116,30 +122,22 @@ export default {
 			checkedUserIds: []
 		}
 	},
+	components:{
+		AddFormPage
+	},
 	methods: {
 		//点击搜索用户
-		onSubmit() {
+		onSubmit () {
 			this.getUserList()
 		},
 
 		//点击重置表单
-		onReset(formName) {
+		onReset (formName) {
 			this.$refs[formName].resetFields();
 		},
 
-		//
-		toggleSelection(rows) {
-			if (rows) {
-				rows.forEach(row => {
-					this.$refs.multipleTable.toggleRowSelection(row);
-				});
-			} else {
-				this.$refs.multipleTable.clearSelection();
-			}
-		},
-
 		//获取用户列表函数
-		async getUserList() {
+		async getUserList () {
 			let params = { ...this.pager, ...this.user }
 			try {
 				let result = await this.$api.getUserList(params)
@@ -152,14 +150,14 @@ export default {
 		},
 
 		//点击左右分页按钮，取得当前的页码，重新请求列表
-		handelCurrentChange(val) {
+		handelCurrentChange (val) {
 			console.log("🚀 ~ file: ManageView.vue ~ line 126 ~ handelCurrentChange ~ val", val)
 			this.pager.pageNum = val
 			this.getUserList()
 		},
 
 		//点击删除按钮，删除单个表格
-		async handleDelete(index, row) {
+		async handleDelete (index, row) {
 			console.log(index, row)
 
 			await this.$api.userDel({ userIds: [row.userId] })
@@ -168,12 +166,12 @@ export default {
 				type: 'success'
 			});
 		},
-		handleEdit() {
+		handleEdit () {
 
 		},
 
 		//点击批量删除表格列表
-		async handlePatchDel() {
+		async handlePatchDel () {
 			if (this.checkedUserIds.length === 0) {
 				this.$message.error('请选择要批量删除的列表');
 				return
@@ -186,7 +184,7 @@ export default {
 		},
 
 		//收集选中的表格列表
-		handleSelectionChange(val) {
+		handleSelectionChange (val) {
 			let arr = []
 			val.forEach(item => {
 				arr.push(item.userId)
@@ -194,7 +192,9 @@ export default {
 			this.checkedUserIds = arr
 		}
 	},
-	mounted() {
+
+	//组件每次创建时都会执行一次函数，获取用户列表
+	mounted () {
 		this.getUserList()
 	}
 }
@@ -215,7 +215,7 @@ export default {
 			background-color: #fff;
 
 			.el-form-item {
-				margin-bottom: 0;
+				margin: 0 20px 0 0
 			}
 		}
 
