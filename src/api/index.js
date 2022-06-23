@@ -25,10 +25,21 @@ function userDel(params = {}) {
 	return request.post("/users/delete", params)
 }
 
+//获取
+function getRoleList(params={}){
+	return request.get("/roles/list",params)
+}
+
+function getDeptList(params={}){
+	return request.get("/dept/list",params)
+}
+
 export default {
 	login,
 	noticeCount,
 	getMenuList,
 	getUserList,
-	userDel
+	userDel,
+	getRoleList,
+	getDeptList
 }

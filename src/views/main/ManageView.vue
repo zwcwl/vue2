@@ -30,8 +30,8 @@
 					<el-button type="danger" @click="handlePatchDel">批量删除</el-button>
 				</div>
 
-				<el-table @selection-change="handleSelectionChange" ref="multipleTable" :data="userList" tooltip-effect="dark"
-					style="width: 100%" stripe border>
+				<el-table @selection-change="handleSelectionChange" ref="multipleTable" :data="userList"
+					tooltip-effect="dark" style="width: 100%" stripe border>
 					<el-table-column type="selection" width="46"></el-table-column>
 
 					<el-table-column v-for="item in columns" :key="item.prop" :label="item.label" :prop="item.prop"
@@ -47,7 +47,8 @@
 					</el-table-column>
 				</el-table>
 
-				<el-pagination background layout="prev, pager, next" :total="pager.total" @current-change="handelCurrentChange">
+				<el-pagination background layout="prev, pager, next" :total="pager.total"
+					@current-change="handelCurrentChange">
 				</el-pagination>
 			</div>
 
@@ -59,7 +60,9 @@
 								prefix-icon="el-icon-user"></el-input>
 						</el-form-item>
 						<el-form-item label="邮箱" label-width="100px" prop="userEmail">
-							<el-input v-model="dialogFrom.userEmail" autocomplete="off" placeholder="请输入用户邮箱" prefix-icon="">
+							<el-input v-model="dialogFrom.userEmail" autocomplete="off" placeholder="请输入用户邮箱"
+								prefix-icon="">
+								<template #append>@163.com</template>
 							</el-input>
 						</el-form-item>
 						<el-form-item label="手机号" label-width="100px" prop="mobile">
@@ -77,11 +80,12 @@
 						</el-form-item>
 						<el-form-item label="系统角色" label-width="100px" prop="roleList">
 							<el-select v-model="dialogFrom.roleList" placeholder="请选择系统角色">
-								<el-option></el-option>
+								<el-option :value="1"></el-option>
 							</el-select>
 						</el-form-item>
 						<el-form-item label="部门" label-width="100px" prop="deptId">
-							<el-cascader v-model="dialogFrom.deptId" :options="dialogFrom.options"  paceholder="请选择所属部门" :props="{ checkStrictly: true }" clearable></el-cascader>
+							<el-cascader v-model="dialogFrom.deptId" :options="dialogFrom.options" paceholder="请选择所属部门"
+								:props="{ checkStrictly: true, value: '_id', label: 'deptName' }" clearable></el-cascader>
 						</el-form-item>
 					</el-form>
 					<div slot="footer" class="dialog-footer">
@@ -97,7 +101,7 @@
 <script>
 export default {
 	name: "ManageView",
-	data () {
+	data() {
 		return {
 			user: {
 				userName: "",
@@ -124,7 +128,7 @@ export default {
 					label: "用户角色",
 					prop: "role",
 					width: "80px",
-					formatter (row, column, value) {
+					formatter(row, column, value) {
 						return {
 							0: "管理员",
 							1: "普通用户"
@@ -135,7 +139,7 @@ export default {
 					label: "用户状态",
 					prop: "state",
 					width: "80px",
-					formatter (row, column, value) {
+					formatter(row, column, value) {
 						return {
 							1: "在职",
 							2: "离职",
@@ -161,12 +165,12 @@ export default {
 			dialogFrom: {
 				userName: "",
 				userEmail: "",
-				mobile:"",
-				job:"",
+				mobile: "",
+				job: "",
 				userState: 3,
 				roleList: "",
-				options:[],
-				deptId:[]
+				options: [],
+				deptId: []
 			},
 			dialogFormVisible: true,
 			rules: {
@@ -176,23 +180,39 @@ export default {
 						message: "请输入用户名",
 						trigger: "blur"
 					}
+				],
+				userEmail: [
+					{
+						required: true,
+						message: "请输入邮箱",
+						trigger: "blur"
+					}
+				],
+				deptId:[
+					{
+						required: true,
+						message: "请输入邮箱",
+						trigger: "blur"
+					}
 				]
-			}
+			},
+			roleList:[],
+			DeptList:[]
 		}
 	},
 	methods: {
 		//点击搜索用户
-		onSubmit () {
+		onSubmit() {
 			this.getUserList()
 		},
 
 		//点击重置表单
-		onReset (formName) {
+		onReset(formName) {
 			this.$refs[formName].resetFields();
 		},
 
 		//获取用户列表函数
-		async getUserList () {
+		async getUserList() {
 			let params = { ...this.pager, ...this.user }
 			try {
 				let result = await this.$api.getUserList(params)
@@ -205,14 +225,14 @@ export default {
 		},
 
 		//点击左右分页按钮，取得当前的页码，重新请求列表
-		handelCurrentChange (val) {
+		handelCurrentChange(val) {
 			console.log("🚀 ~ file: ManageView.vue ~ line 126 ~ handelCurrentChange ~ val", val)
 			this.pager.pageNum = val
 			this.getUserList()
 		},
 
 		//点击删除按钮，删除单个表格
-		async handleDelete (index, row) {
+		async handleDelete(index, row) {
 			console.log(index, row)
 
 			await this.$api.userDel({ userIds: [row.userId] })
@@ -222,12 +242,12 @@ export default {
 			});
 		},
 
-		handleEdit () {
+		handleEdit() {
 
 		},
 
 		//点击批量删除表格列表
-		async handlePatchDel () {
+		async handlePatchDel() {
 			if (this.checkedUserIds.length === 0) {
 				this.$message.error('请选择要批量删除的列表');
 				return
@@ -240,18 +260,32 @@ export default {
 		},
 
 		//收集选中的表格列表
-		handleSelectionChange (val) {
+		handleSelectionChange(val) {
 			let arr = []
 			val.forEach(item => {
 				arr.push(item.userId)
 			})
 			this.checkedUserIds = arr
+		},
+
+		//获取部门列表
+		async getDeptList(){
+			let list=await this.$api.getDeptList()
+			this.DeptList=list
+		},
+
+		//获取角色列表
+		async getRoleList(){
+			let list=await this.$api.getRoleList()
+			this.roleList=list
 		}
 	},
 
 	//组件每次创建时都会执行一次函数，获取用户列表
-	mounted () {
+	mounted() {
 		this.getUserList()
+		this.getDeptList()
+		this.getRoleList()
 	}
 }
 </script>
