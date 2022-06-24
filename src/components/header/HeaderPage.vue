@@ -2,14 +2,14 @@
 	<div id="header-page">
 		<div class="lf-container">
 			<div class="spread-shrink" @click="cutSpread">
-				<el-button type="primary" :icon="isSpread ? 'el-icon-s-unfold' : 'el-icon-s-fold'"></el-button>
+				<i :class="isSpread ? 'el-icon-s-unfold' : 'el-icon-s-fold'"></i>
 			</div>
 			<bread-page></bread-page>
 		</div>
 		<div class="rt-container">
 			<div class="user-info">
 				<el-badge :value="count" :max="99" class="item">
-					<el-button><i class="el-icon-bell"></i></el-button>
+					<i class="el-icon-bell"></i>
 				</el-badge>
 			</div>
 			<div class="user-utils">
@@ -48,9 +48,9 @@ export default {
 				this.$router.replace("/user/login")
 			}
 		},
-		async getMenuList () {
+		async getUndone () {
 			try {
-				let result = await this.$api.getMenuList()
+				let result = await this.$api.getUndone()
 				this.count = result
 			} catch (error) {
 
@@ -64,7 +64,7 @@ export default {
 		BreadPage
 	},
 	mounted () {
-		this.getMenuList()
+		this.getUndone()
 	}
 }
 </script>
@@ -83,9 +83,10 @@ export default {
 		.spread-shrink {
 			margin-right: 20px;
 
-			.el-button {
+			i {
 				font-size: 26px;
 				padding: 4px 10px;
+				cursor: pointer;
 			}
 		}
 	}
@@ -96,7 +97,7 @@ export default {
 
 		.user-info {
 			.el-badge {
-				.el-button {
+				i {
 					font-size: 26px;
 					padding: 4px 10px;
 				}

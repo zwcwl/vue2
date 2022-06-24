@@ -37,18 +37,17 @@ export default {
 		async submitForm (formName) {
 			try {
 				await this.$refs[formName].validate()
-				let result = await this.$api.login(this.user)
-        console.log("🚀 ~ file: LoginView.vue ~ line 41 ~ submitForm ~ result", result)
+				let result = await this.$api.usersLogin(this.user)
+        this.$message.success("登入成功")
 				if (result) {
 					this.$store.commit("addUserInfo",result)
 					this.$router.replace("/")
 				}
 			} catch (error) {
-        console.log("🚀 ~ file: LoginView.vue ~ line 46 ~ submitForm ~ error", error)
+        this.$message.error("error")
 			}
 		},
 		resetForm (formName) {
-			console.log(this.$refs);
 			this.$refs[formName].resetFields()
 		}
 	}

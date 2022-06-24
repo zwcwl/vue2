@@ -13,7 +13,7 @@ let routes = [
 			requestAuth: true,
 			name: "首页",
 		},
-		component: () => import("@/views/home/HomeView"),
+		component: () => import("@/views/HomeView"),
 		children: [
 			{
 				path: "",
@@ -25,22 +25,13 @@ let routes = [
 				component: () => import("@/views/hello/HelloView")
 			},
 			{
-				path: "setting",
-				name: "SettingView",
-				meta: {
-					requestAuth: true,
-					name: "设置"
-				},
-				component: () => import("@/views/main/SettingView")
-			},
-			{
 				path:"manage",
 				name:"ManageView",
 				meta:{
 					requestAuth: true,
 					name: "用户管理"
 				},
-				component:()=>import("@/views/main/ManageView")
+				component:()=>import("@/views/userManage/UserManage")
 			}
 		]
 	},

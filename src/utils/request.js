@@ -12,8 +12,6 @@ import storage from "@/utils/storage"
 // 	NETWORK_ERROR: "网络请求异常，请稍后重试"
 // };
 
-console.log("🚀 ~ file: request.js ~ line 16 ~ config", config)
-
 //创建axios实例
 let instance = axios.create({
 	baseURL: config.baseApi,

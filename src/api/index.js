@@ -1,45 +1,46 @@
 import request from "@/utils/request"
 
 //登入
-function login(params = {}) {
+function usersLogin(params = {}) {
 	return request.post("/users/login", params)
 }
 
-//获取菜单项
-function noticeCount(params = {}) {
-	return request.get("/leave/count", params)
+//获取待办项数量
+function getUndone(params = {}) {
+	return request.get("/undone", params)
 }
 
-//获取菜单列表
-function getMenuList(params = {}) {
-	return request.get("/menu/list", params)
+//获取菜单项
+function getMenu(params = {}) {
+	return request.get("/menu", params)
 }
 
 //获取用户列表
-function getUserList(params = {}) {
-	return request.get("/users/list", params)
+function getUser(params = {}) {
+	return request.get("/users", params)
 }
 
 //删除用户
-function userDel(params = {}) {
-	return request.post("/users/delete", params)
+function delUser(params = {}) {
+	return request.post("/users", params)
 }
 
-//获取
-function getRoleList(params={}){
-	return request.get("/roles/list",params)
+//获取角色
+function getRole(params={}){
+	return request.get("/roles",params)
 }
 
-function getDeptList(params={}){
-	return request.get("/dept/list",params)
+//获取部门
+function getDept(params={}){
+	return request.get("/dept",params)
 }
 
 export default {
-	login,
-	noticeCount,
-	getMenuList,
-	getUserList,
-	userDel,
-	getRoleList,
-	getDeptList
+	usersLogin,
+	getUndone,
+	getMenu,
+	getUser,
+	delUser,
+	getRole,
+	getDept
 }
