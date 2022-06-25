@@ -20,6 +20,10 @@ function getUser(params = {}) {
 	return request.get("/users", params)
 }
 
+function postUser(params={}){
+	return request.post("/users",params)
+}
+
 //删除用户
 function delUser(params = {}) {
 	return request.post("/users", params)
@@ -42,5 +46,6 @@ export default {
 	getUser,
 	delUser,
 	getRole,
-	getDept
+	getDept,
+	postUser
 }

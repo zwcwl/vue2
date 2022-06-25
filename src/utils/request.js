@@ -38,7 +38,7 @@ instance.interceptors.response.use(
 	//响应成功的数据
 	response => {
 		let { code, msg , data } = response.data
-
+    console.log("🚀 ~ file: request.js ~ line 41 ~ data", data)
 		//判断当状态为200时表示响应成功
 		if (code === 200) {
 			return Promise.resolve(data)

@@ -24,7 +24,7 @@ new Vue({
   render: h => h(App),
   router,
   store,
-  counted () {
-    Vue.prototype.$bus = this
+  beforeCreate () {
+    Vue.prototype.$bus = this;
   }
 }).$mount('#app')

@@ -1,5 +1,5 @@
 <template>
-	<div class="query-form">
+	<div id="query-form">
 		<el-form :inline="true" :model="queryForm" class="demo-form-inline" ref="formquery">
 			<el-form-item label="用户名" prop="userName">
 				<el-input v-model="queryForm.userName" placeholder="请输入用户名"></el-input>
@@ -40,7 +40,7 @@ export default {
 	methods: {
 		//点击搜索用户
 		onSubmit () {
-			getUser(this.queryForm)
+			this.$bus.$emit("getUser",this.queryForm)
 		},
 
 		//点击重置表单
@@ -52,7 +52,7 @@ export default {
 </script>
 
 <style lang="scss">
-.query-form {
+#query-form {
 	padding: 20px;
 	background-color: #fff;
 

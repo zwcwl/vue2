@@ -1,7 +1,7 @@
 <template>
-	<div class="table-content">
+	<div id="table-content">
 		<div class="action">
-			<el-button type="primary">添加</el-button>
+			<el-button type="primary" @click="dialogShow">添加</el-button>
 			<el-button type="danger" @click="handlePatchDel">批量删除</el-button>
 		</div>
 
@@ -22,7 +22,7 @@
 			</el-table-column>
 		</el-table>
 
-		<el-pagination background layout="prev, pager, next" :total="pager.total" @current-change="handelCurrentChange">
+		<el-pagination background layout="prev, pager, next" :total="paging.total" @current-change="handelCurrentChange">
 		</el-pagination>
 	</div>
 </template>
@@ -89,8 +89,6 @@ export default {
 	methods: {
 		//点击删除按钮，删除单个表格
 		async handleDelete (index, row) {
-			console.log(index, row)
-
 			await this.$api.delUser({ userIds: [row.userId] })
 			this.$message({
 				message: '恭喜你，这是一条成功消息',
@@ -98,8 +96,9 @@ export default {
 			});
 		},
 
-		handleEdit () {
-
+		//点击编辑用户
+		handleEdit (index, row) {
+			this.$bus.$emit("handleEdit", row)
 		},
 
 		//点击批量删除表格列表
@@ -125,13 +124,13 @@ export default {
 		},
 
 		//获取用户列表函数
-		async getUser (queryForm=[]) {
+		async getUser (queryForm = []) {
 			let params = { ...this.paging, ...queryForm }
 			try {
 				let result = await this.$api.getUser(params)
 				let { list, page } = result
 				this.userList = list
-				this.pager.total = page.total
+				this.paging.total = page.total
 			} catch (error) {
 				console.log("🚀 ~ file: ManageView.vue ~ line 121 ~ getUserList ~ error", error)
 			}
@@ -143,12 +142,21 @@ export default {
 			this.pager.pageNum = val
 			this.getUser()
 		},
+
+		//点击显示添加表单
+		dialogShow () {
+			this.$bus.$emit("dialogShow")
+		}
+	},
+	mounted () {
+		this.getUser()
+		this.$bus.$on("getUser", this.getUser)
 	}
 }
 </script>
 
 <style lang="scss">
-.table-content {
+#table-content {
 	margin-top: 20px;
 	padding: 20px;
 	background-color: #fff;
