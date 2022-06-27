@@ -148,8 +148,7 @@ export default {
 			this.$bus.$emit("dialogShow")
 		}
 	},
-	mounted () {
-		this.getUser()
+	created () {
 		this.$bus.$on("getUser", this.getUser)
 	}
 }

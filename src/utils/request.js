@@ -1,6 +1,7 @@
 import config from "@/config"
 import axios from "axios"
 import storage from "@/utils/storage"
+import { Message } from "element-ui"
 
 // const CODE = {
 // 	SUCCESS: 200,  //成功
@@ -37,14 +38,15 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
 	//响应成功的数据
 	response => {
-		let { code, msg , data } = response.data
-    console.log("🚀 ~ file: request.js ~ line 41 ~ data", data)
+		let { code, msg, data } = response.data
+		console.log("🚀 ~ file: request.js ~ line 41 ~ data", data)
 		//判断当状态为200时表示响应成功
 		if (code === 200) {
 			return Promise.resolve(data)
 		} else {
-				//账号密码错误
+			//账号密码错误
 			if (code === 30001) {
+				Message.error("账号密码错误")
 				return Promise.reject(msg)
 
 				//token认证失败或过期
@@ -56,11 +58,11 @@ instance.interceptors.response.use(
 				return Promise.reject(msg)
 
 				//网络异常，请重新登入
-			}else if(code === 30004){
+			} else if (code === 30004) {
 				return Promise.reject(msg)
 
 				//您还未登入，请登入后查看
-			}else if(code === 30005){
+			} else if (code === 30005) {
 				return Promise.reject(msg)
 			}
 		}
@@ -74,10 +76,21 @@ instance.interceptors.response.use(
 //封装请求
 function request (options) {
 
-	//判断moke是否打开，打开了使用mock地址
-	options.baseURL = config.mock ? config.mockApi : config.baseApi
+	//判断局部mock
+	let isMock = config.mock
+	if (options.mock != "undefined") {
+		isMock = options.mock
+	}
 
-	//当请求为get时，则把data转换为params
+	//判断moke是否打开
+	if (config.env === "production") {
+		options.baseURL = config.baseApi
+	} else {
+		options.baseURL = isMock ? config.mockApi : config.baseApi
+	}
+
+	//当请求为get时，则把data转换为options
+	options.method = options.method || "get"
 	if (options.method === "get") {
 		options.params = options.data
 		delete options.data
@@ -89,11 +102,12 @@ function request (options) {
 
 //封装请求的方法
 ["get", "post", "put", "delete"].forEach(item => {
-	request[item] = function (url, options) {
+	request[item] = function (url, data, options) {
 		return request({
 			method: item,
 			url,
-			data: options
+			data,
+			...options
 		})
 	}
 })

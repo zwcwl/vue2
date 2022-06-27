@@ -30,13 +30,10 @@ export default {
 			queryForm: {
 				userName: "",
 				userId: "",
-				userState: 0
+				userState: 1
 			},
 		}
 	},
-	props:[
-		"getUser"
-	],
 	methods: {
 		//点击搜索用户
 		onSubmit () {
@@ -47,6 +44,9 @@ export default {
 		onReset (formName) {
 			this.$refs[formName].resetFields();
 		},
+	},
+	mounted(){
+		this.$bus.$emit("getUser",this.queryForm)
 	}
 }
 </script>
