@@ -47,6 +47,7 @@ export default {
 	},
 	mounted(){
 		this.$bus.$emit("getUser",this.queryForm)
+		this.$bus.$on("onSubmit",this.onSubmit)
 	}
 }
 </script>

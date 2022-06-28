@@ -28,18 +28,17 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
 import BreadPage from "@/components/header/BreadPage.vue"
 
 export default {
 	name: "HeaderPage",
 	data () {
 		return {
-			count: ""
+			count: "",
+			isSpread:false
 		}
 	},
 	methods: {
-		...mapMutations(["cutSpread"]),
 		handleCommand (key) {
 			if (key === "setting") {
 				this.$router.replace("/setting")
@@ -53,17 +52,19 @@ export default {
 				let result = await this.$api.getUndone()
 				this.count = result
 			} catch (error) {
-
+				console.log(error);
 			}
+		},
+		cutSpread(){
+			this.isSpread=this.$bus.$emit("cutSpread")
 		}
 	},
 	computed: {
-		...mapState(["isSpread"])
 	},
 	components: {
 		BreadPage
 	},
-	mounted () {
+	created () {
 		this.getUndone()
 	}
 }

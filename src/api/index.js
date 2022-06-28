@@ -2,12 +2,12 @@ import request from "@/utils/request"
 
 //登入
 function usersLogin(params = {}) {
-	return request.post("/users/login",params, {mock:false})
+	return request.post("/users/login",params)
 }
 
 //获取待办项数量
 function getUndone(params = {}) {
-	return request.get("/undone", params)
+	return request.get("/undone", params, {mock:true})
 }
 
 //获取菜单项

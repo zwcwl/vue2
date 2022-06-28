@@ -56,7 +56,7 @@ export default {
 				userEmail: "",
 				mobile: "",
 				job: "",
-				userState: 3,
+				userState: 1,
 				roleList: [],
 				deptList: []
 			},
@@ -92,7 +92,7 @@ export default {
 				let list = await this.$api.getDept()
 				this.deptList = list
 			} catch (error) {
-				console.log("🚀 ~ file: DialogFrom.vue ~ line 94 ~ getDept ~ error", error)
+				console.log(error)
 			}
 		},
 
@@ -102,7 +102,7 @@ export default {
 				let list = await this.$api.getRole()
 				this.roleList = list
 			} catch (error) {
-				console.log("🚀 ~ file: DialogFrom.vue ~ line 104 ~ getRole ~ error", error)
+				console.log(error)
 			}
 		},
 
@@ -142,6 +142,7 @@ export default {
 			this.dialogFormVisible = true
 			this.$nextTick(() => {
 				Object.assign(this.dialogFrom, old)
+				this.dialogFrom.userEmail=this.dialogFrom.userEmail.split("@")[0]
 			})
 		}
 	},

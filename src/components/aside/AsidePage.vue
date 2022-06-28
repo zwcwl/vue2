@@ -39,14 +39,23 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
 export default {
 	name: "AsidePage",
+	data(){
+		return {
+			isSpread:false
+		}
+	},
 	computed: {
-		...mapState(["isSpread"])
 	},
 	methods: {
-		...mapMutations(["cutSpread"])
+		cutSpread(){
+			this.isSpread=!this.isSpread
+			return this.isSpread
+		}
+	},
+	created(){
+		this.$bus.$on("cutSpread",this.cutSpread)
 	}
 }
 </script>

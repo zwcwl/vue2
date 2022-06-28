@@ -1,11 +1,11 @@
 <template>
 	<div id="login-view">
 		<el-form :model="user" status-icon :rules="rules" ref="ruleForm">
-			<el-form-item prop="username">
-				<el-input type="text" v-model="user.username" placeholder="请输入账号" prefix-icon="el-icon-user"></el-input>
+			<el-form-item prop="userName">
+				<el-input type="text" v-model="user.userName" placeholder="请输入账号" prefix-icon="el-icon-user"></el-input>
 			</el-form-item>
-			<el-form-item prop="userpwd">
-				<el-input type="password" v-model="user.userpwd" placeholder="请输入密码" prefix-icon="el-icon-view"></el-input>
+			<el-form-item prop="userPwd">
+				<el-input type="password" v-model="user.userPwd" placeholder="请输入密码" prefix-icon="el-icon-view"></el-input>
 			</el-form-item>
 			<el-form-item>
 				<el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
@@ -20,14 +20,14 @@ export default {
 	data () {
 		return {
 			user: {
-				username: "",
-				userpwd: ""
+				userName: "",
+				userPwd: ""
 			},
 			rules: {
-				username: [
+				userName: [
 					{ required: true, message: "请输入账号", trigger: "blur" }
 				],
-				userpwd: [
+				userPwd: [
 					{ required: true, message: "请输入账号", trigger: "blur" }
 				]
 			}
@@ -44,7 +44,7 @@ export default {
 					this.$router.replace("/")
 				}
 			} catch (error) {
-        this.$message.error("error")
+        console.log(error);
 			}
 		},
 		resetForm (formName) {

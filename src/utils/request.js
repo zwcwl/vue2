@@ -3,6 +3,8 @@ import axios from "axios"
 import storage from "@/utils/storage"
 import { Message } from "element-ui"
 
+import vueRouter from "vue-router"
+
 // const CODE = {
 // 	SUCCESS: 200,  //成功
 // 	PARAM_ERROR: "参数错误",
@@ -12,6 +14,16 @@ import { Message } from "element-ui"
 // 	AUTH_ERROR: "认证失败或TOKEN过期",
 // 	NETWORK_ERROR: "网络请求异常，请稍后重试"
 // };
+
+let CODE = {
+	SUCCESS: 200,
+	PARAM_ERROR: 10001,						//参数错误
+	USER_ACCOUNT_ERROR: 20001,		//账号或密码错误
+	USER_LOGIN_ERROR: 30001,			//用户未登入
+	BUSINESS_ERROR: 40001,				//业务请求失败
+	AUTH_ERROR: 50001,						//TOKEN认证失败或过期
+	NETWORK_ERROR: 60001					//"网络请求异常，请稍后重试"
+}
 
 //创建axios实例
 let instance = axios.create({
@@ -41,30 +53,37 @@ instance.interceptors.response.use(
 		let { code, msg, data } = response.data
 		console.log("🚀 ~ file: request.js ~ line 41 ~ data", data)
 		//判断当状态为200时表示响应成功
-		if (code === 200) {
+		if (code === CODE.SUCCESS) {
 			return Promise.resolve(data)
 		} else {
-			//账号密码错误
-			if (code === 30001) {
-				Message.error("账号密码错误")
-				return Promise.reject(msg)
+			//参数错误
+			if (code === CODE.PARAM_ERROR) {
+				Message.error("参数错误")
 
-				//token认证失败或过期
-			} else if (code === 30002) {
-				return Promise.reject(msg)
+				//账号密码错误
+			} else if (code === CODE.USER_ACCOUNT_ERROR) {
+				Message.error("账号或密码错误，请重新输入")
 
-				//参数错误
-			} else if (code === 30003) {
-				return Promise.reject(msg)
+				//用户未登入
+			} else if (code === CODE.USER_LOGIN_ERROR) {
+				Message.error("您还未登入，请登入后查看")
+				vueRouter.replace("/user/login")
 
-				//网络异常，请重新登入
-			} else if (code === 30004) {
-				return Promise.reject(msg)
+				//业务请求失败
+			} else if (code === BUSINESS_ERROR) {
+				Message.error("业务请求失败")
 
-				//您还未登入，请登入后查看
-			} else if (code === 30005) {
-				return Promise.reject(msg)
+				//TOKEN认证失败或过期,请重新登入
+			} else if (code === AUTH_ERROR) {
+				Message.error("TOKEN认证失败或过期,请重新登入")
+
+				//网络请求异常，请稍后重试
+			}else if (code === NETWORK_ERROR) {
+				Message.error("网络请求异常，请稍后重试")
 			}
+
+			//返回错误信息
+			return Promise.reject(msg)
 		}
 	},
 	//响应失败的错误信息
@@ -78,7 +97,7 @@ function request (options) {
 
 	//判断局部mock
 	let isMock = config.mock
-	if (options.mock != "undefined") {
+	if (options.mock != undefined) {
 		isMock = options.mock
 	}
 

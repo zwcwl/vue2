@@ -22,15 +22,17 @@
 			</el-table-column>
 		</el-table>
 
-		<el-pagination background layout="prev, pager, next" :total="paging.total" @current-change="handelCurrentChange">
+		<el-pagination background layout="prev, pager, next" :total="page.total" @current-change="handelCurrentChange">
 		</el-pagination>
 	</div>
 </template>
 
 <script>
+import dateFormat from "@/utils/dateFormat"
 export default {
 	data () {
 		return {
+			userList: [],
 			columns: [
 				{
 					label: "用户ID",
@@ -44,11 +46,12 @@ export default {
 				},
 				{
 					label: "用户邮箱",
-					prop: "userEmail"
+					prop: "userEmail",
+					width: "180px"
 				},
 				{
 					label: "用户角色",
-					prop: "role",
+					prop: "userRole",
 					width: "80px",
 					formatter (row, column, value) {
 						return {
@@ -59,9 +62,10 @@ export default {
 				},
 				{
 					label: "用户状态",
-					prop: "state",
+					prop: "userState",
 					width: "80px",
 					formatter (row, column, value) {
+						console.log(value);
 						return {
 							1: "在职",
 							2: "离职",
@@ -71,19 +75,22 @@ export default {
 				},
 				{
 					label: "注册时间",
-					prop: "createTime"
+					prop: "createTime",
+					formatter(row,column,a,value){
+						console.log(value)
+						return 123
+					}
 				},
 				{
 					label: "最后登入时间",
 					prop: "lastLoginTime"
 				}
 			],
-			paging: {
+			page: {
 				pageNum: 1,
 				pageSize: 10,
-				total: 90
+				total: 0
 			},
-			userList: [],
 		}
 	},
 	methods: {
@@ -125,22 +132,20 @@ export default {
 
 		//获取用户列表函数
 		async getUser (queryForm = []) {
-			let params = { ...this.paging, ...queryForm }
+			let params = { ...this.page, ...queryForm }
 			try {
-				let result = await this.$api.getUser(params)
-				let { list, page } = result
+				let { list, page } = await this.$api.getUser(params)
 				this.userList = list
-				this.paging.total = page.total
+				this.page.total = page.total
 			} catch (error) {
-				console.log("🚀 ~ file: ManageView.vue ~ line 121 ~ getUserList ~ error", error)
+				console.log(error)
 			}
 		},
 
 		//点击左右分页按钮，取得当前的页码，重新请求列表
 		handelCurrentChange (val) {
-			console.log("🚀 ~ file: ManageView.vue ~ line 126 ~ handelCurrentChange ~ val", val)
 			this.pager.pageNum = val
-			this.getUser()
+			this.$bus.$emit("onSubmit")
 		},
 
 		//点击显示添加表单
