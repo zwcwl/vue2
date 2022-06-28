@@ -51,7 +51,7 @@ instance.interceptors.response.use(
 	//响应成功的数据
 	response => {
 		let { code, msg, data } = response.data
-		console.log("🚀 ~ file: request.js ~ line 41 ~ data", data)
+		console.log(data)
 		//判断当状态为200时表示响应成功
 		if (code === CODE.SUCCESS) {
 			return Promise.resolve(data)
@@ -78,7 +78,7 @@ instance.interceptors.response.use(
 				Message.error("TOKEN认证失败或过期,请重新登入")
 
 				//网络请求异常，请稍后重试
-			}else if (code === NETWORK_ERROR) {
+			} else if (code === NETWORK_ERROR) {
 				Message.error("网络请求异常，请稍后重试")
 			}
 
@@ -93,7 +93,7 @@ instance.interceptors.response.use(
 )
 
 //封装请求
-function request (options) {
+function request(options) {
 
 	//判断局部mock
 	let isMock = config.mock

@@ -24,8 +24,8 @@
 						<el-option :value="3" label="试用期"></el-option>
 					</el-select>
 				</el-form-item>
-				<el-form-item label="系统角色" label-width="100px" prop="roleList">
-					<el-select v-model="dialogFrom.roleList" placeholder="请选择系统角色" multiple style="width: 100%">
+				<el-form-item label="系统角色" label-width="100px" prop="systemRole">
+					<el-select v-model="dialogFrom.systemRole" placeholder="请选择系统角色" multiple style="width: 100%">
 						<el-option v-for="role in roleList" :key="role._id" :label="role.roleName" :value="role._id"></el-option>
 					</el-select>
 				</el-form-item>
@@ -57,7 +57,7 @@ export default {
 				mobile: "",
 				job: "",
 				userState: 1,
-				roleList: [],
+				systemRole: [],
 				deptList: []
 			},
 			rules: {

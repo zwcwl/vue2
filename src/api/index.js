@@ -12,7 +12,7 @@ function getUndone(params = {}) {
 
 //获取菜单项
 function getMenu(params = {}) {
-	return request.get("/menu", params)
+	return request.get("/menu", params, {mock:true})
 }
 
 //获取用户
@@ -22,27 +22,27 @@ function getUser(params = {}) {
 
 //新增用户
 function postUser(params={}){
-	return request.post("/users",params)
+	return request.post("/users",params, {mock:true})
 }
 
 //更新用户
 function putUser(params={}){
-	return request.put("/users",params)
+	return request.put("/users",params, {mock:true})
 }
 
 //删除用户
 function delUser(params = {}) {
-	return request.post("/users", params)
+	return request.post("/users", params, {mock:true})
 }
 
 //获取角色
 function getRole(params={}){
-	return request.get("/roles",params)
+	return request.get("/roles",params, {mock:true})
 }
 
 //获取部门
 function getDept(params={}){
-	return request.get("/dept",params)
+	return request.get("/dept",params, {mock:true})
 }
 
 export default {

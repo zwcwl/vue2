@@ -65,7 +65,6 @@ export default {
 					prop: "userState",
 					width: "80px",
 					formatter (row, column, value) {
-						console.log(value);
 						return {
 							1: "在职",
 							2: "离职",
@@ -76,14 +75,16 @@ export default {
 				{
 					label: "注册时间",
 					prop: "createTime",
-					formatter(row,column,a,value){
-						console.log(value)
-						return 123
+					formatter(row,column,value){
+						return dateFormat(value)
 					}
 				},
 				{
 					label: "最后登入时间",
-					prop: "lastLoginTime"
+					prop: "lastLoginTime",
+					formatter(row,column,value){
+						return dateFormat(value)
+					}
 				}
 			],
 			page: {

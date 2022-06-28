@@ -5,7 +5,8 @@
 				<el-input type="text" v-model="user.userName" placeholder="请输入账号" prefix-icon="el-icon-user"></el-input>
 			</el-form-item>
 			<el-form-item prop="userPwd">
-				<el-input type="password" v-model="user.userPwd" placeholder="请输入密码" prefix-icon="el-icon-view"></el-input>
+				<el-input type="password" v-model="user.userPwd" placeholder="请输入密码" prefix-icon="el-icon-view">
+				</el-input>
 			</el-form-item>
 			<el-form-item>
 				<el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
@@ -17,7 +18,7 @@
 
 <script>
 export default {
-	data () {
+	data() {
 		return {
 			user: {
 				userName: "",
@@ -34,20 +35,20 @@ export default {
 		}
 	},
 	methods: {
-		async submitForm (formName) {
+		async submitForm(formName) {
 			try {
 				await this.$refs[formName].validate()
 				let result = await this.$api.usersLogin(this.user)
-        this.$message.success("登入成功")
-				if (result) {
-					this.$store.commit("addUserInfo",result)
-					this.$router.replace("/")
-				}
+				this.$message.success("登入成功")
+				
+				this.$store.commit("addUserInfo", result)
+				this.$router.replace("/")
+
 			} catch (error) {
-        console.log(error);
+				console.log(error);
 			}
 		},
-		resetForm (formName) {
+		resetForm(formName) {
 			this.$refs[formName].resetFields()
 		}
 	}
