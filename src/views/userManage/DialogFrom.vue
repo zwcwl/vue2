@@ -82,7 +82,8 @@ export default {
 						trigger: "blur"
 					}
 				]
-			}
+			},
+			action: ""
 		}
 	},
 	methods: {
@@ -106,8 +107,13 @@ export default {
 			}
 		},
 
-		//打开和关闭dialog弹窗表单
-		dialogShow () {
+		//打开dialog弹窗表单
+		dialogShow (row) {
+			this.action = row.action
+			if (row.action === "update") {
+				this.handleEdit(row)
+				return
+			}
 			this.dialogFormVisible = true
 		},
 
@@ -118,37 +124,35 @@ export default {
 		},
 
 		//dialog弹窗提交时触发的事件函数
-		dialogSubmit () {
-			this.$refs.dialogFrom.validate(async valid => {
-				if (valid) {
-					try {
-						let data = JSON.parse(JSON.stringify(this.dialogFrom))
-						data.userEmail += "@163.com"
-						let resule = await this.$api.postUser(data)
-						if (resule) {
-							this.$message.success("用户添加成功")
-							this.dialogClose()
-						}
-					} catch (error) {
-						console.log(error);
-					}
+		async dialogSubmit () {
+			try {
+				await this.$refs.dialogFrom.validate
+				let data = JSON.parse(JSON.stringify(this.dialogFrom))
+				data.userEmail += "@163.com"
+				if (this.action === "update") {
+					await this.$api.putUser(data)
+					this.$message.success("用户更新成功")
+				} else {
+					await this.$api.postUser(data)
+					this.$message.success("用户添加成功")
 				}
-			})
+				this.dialogClose()
+				this.$bus.$emit("onSubmit")
+			} catch (error) {
+				console.log(error);
+			}
 		},
-
-		//更新用户函数
+		//点击编辑按钮打开dialogFrom
 		handleEdit (old) {
-			console.log("🚀 ~ file: DialogFrom.vue ~ line 148 ~ handleEdit ~ old", old)
 			this.dialogFormVisible = true
 			this.$nextTick(() => {
 				Object.assign(this.dialogFrom, old)
-				this.dialogFrom.userEmail=this.dialogFrom.userEmail.split("@")[0]
+				this.dialogFrom.userEmail = this.dialogFrom.userEmail.split("@")[0]
 			})
-		}
+		},
 	},
-	mounted () {
+	created () {
 		this.$bus.$on("dialogShow", this.dialogShow)
-		this.$bus.$on("handleEdit", this.handleEdit)
 		this.getRole()
 		this.getDept()
 	},

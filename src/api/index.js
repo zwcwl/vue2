@@ -22,17 +22,17 @@ function getUser(params = {}) {
 
 //新增用户
 function postUser(params={}){
-	return request.post("/users",params, {mock:true})
+	return request.post("/users",params)
 }
 
 //更新用户
 function putUser(params={}){
-	return request.put("/users",params, {mock:true})
+	return request.put("/users",params)
 }
 
 //删除用户
 function delUser(params = {}) {
-	return request.post("/users", params, {mock:true})
+	return request.delete("/users", params)
 }
 
 //获取角色

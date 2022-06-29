@@ -1,7 +1,7 @@
 <template>
 	<div id="table-content">
 		<div class="action">
-			<el-button type="primary" @click="dialogShow">添加</el-button>
+			<el-button type="primary" @click="dialogShow('create')">添加</el-button>
 			<el-button type="danger" @click="handlePatchDel">批量删除</el-button>
 		</div>
 
@@ -15,7 +15,7 @@
 
 			<el-table-column label="操作" width="143px">
 				<template slot-scope="scope">
-					<el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+					<el-button size="mini" @click="dialogShow('update',scope.$index, scope.row)">编辑</el-button>
 					<el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
 					</el-button>
 				</template>
@@ -75,14 +75,14 @@ export default {
 				{
 					label: "注册时间",
 					prop: "createTime",
-					formatter(row,column,value){
+					formatter (row, column, value) {
 						return dateFormat(value)
 					}
 				},
 				{
 					label: "最后登入时间",
 					prop: "lastLoginTime",
-					formatter(row,column,value){
+					formatter (row, column, value) {
 						return dateFormat(value)
 					}
 				}
@@ -90,23 +90,22 @@ export default {
 			page: {
 				pageNum: 1,
 				pageSize: 10,
-				total: 0
+				total: 1
 			},
+			checkedUserIds: [],
+			actions:""
 		}
 	},
 	methods: {
 		//点击删除按钮，删除单个表格
 		async handleDelete (index, row) {
-			await this.$api.delUser({ userIds: [row.userId] })
-			this.$message({
-				message: '恭喜你，这是一条成功消息',
-				type: 'success'
-			});
-		},
-
-		//点击编辑用户
-		handleEdit (index, row) {
-			this.$bus.$emit("handleEdit", row)
+			try {
+				await this.$api.delUser({ userIds: [row.userId] })
+				this.$bus.$emit("onSubmit")
+				this.$message.success("删除成功");
+			} catch (error) {
+				this.$message.success("删除失败");
+			}
 		},
 
 		//点击批量删除表格列表
@@ -115,14 +114,15 @@ export default {
 				this.$message.error('请选择要批量删除的列表');
 				return
 			}
-			await this.$api.delUser({ userIds: this.checkedUserIds })
-			this.$message({
-				message: '删除成功',
-				type: 'success'
-			});
+			try {
+				await this.$api.delUser({ userIds: this.checkedUserIds })
+				this.$bus.$emit("onSubmit")
+			} catch (error) {
+				this.$message.success("删除失败");
+			}
 		},
 
-		//收集选中的表格列表
+		//收集选中的表格列表userId
 		handleSelectionChange (val) {
 			let arr = []
 			val.forEach(item => {
@@ -150,8 +150,8 @@ export default {
 		},
 
 		//点击显示添加表单
-		dialogShow () {
-			this.$bus.$emit("dialogShow")
+		dialogShow (action,index,row) {
+			this.$bus.$emit("dialogShow",{action,...row})
 		}
 	},
 	created () {

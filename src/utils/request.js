@@ -51,7 +51,7 @@ instance.interceptors.response.use(
 	//响应成功的数据
 	response => {
 		let { code, msg, data } = response.data
-		console.log(data)
+		console.log(`${response.config.url} ==>` ,data)
 		//判断当状态为200时表示响应成功
 		if (code === CODE.SUCCESS) {
 			return Promise.resolve(data)
@@ -70,15 +70,15 @@ instance.interceptors.response.use(
 				vueRouter.replace("/user/login")
 
 				//业务请求失败
-			} else if (code === BUSINESS_ERROR) {
+			} else if (code === CODE.BUSINESS_ERROR) {
 				Message.error("业务请求失败")
 
 				//TOKEN认证失败或过期,请重新登入
-			} else if (code === AUTH_ERROR) {
+			} else if (code === CODE.AUTH_ERROR) {
 				Message.error("TOKEN认证失败或过期,请重新登入")
 
 				//网络请求异常，请稍后重试
-			} else if (code === NETWORK_ERROR) {
+			} else if (code === CODE.NETWORK_ERROR) {
 				Message.error("网络请求异常，请稍后重试")
 			}
 
