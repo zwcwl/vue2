@@ -1,0 +1,34 @@
+<template>
+	<div class="tree-menu">
+		<template v-for="item in menu">
+			<el-submenu :key="item._id" v-if="item.children.length > 0 && item.children && item.children[0].menuType == 1" :index="item.path">
+				<template slot="title">
+					<i :class="item.icon"></i>
+					<span slot="title">{{item.menuName}}</span>
+				</template>
+				<tree-menu :menu="item.children"></tree-menu>
+			</el-submenu>
+			<el-menu-item v-else-if="item.menuType == 1" :index="item.path" :key="item._id">{{item.menuName}}</el-menu-item>
+		</template>
+	</div>
+</template>
+
+<script>
+export default {
+	name: "TreeMenu",
+	props: {
+		menu: {
+			type: Array,
+			default () {
+				return []
+			}
+		}
+	},
+	created () {
+		console.log(this.menu);
+	}
+}
+</script>
+
+<style lang="scss">
+</style>

@@ -3,15 +3,16 @@
 		<div class="title">
 			<h2>hello</h2>
 		</div>
-		<el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isSpread" background-color="#545c64" text-color="#fff">
-			<el-submenu index="1">
+		<el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isSpread" background-color="#545c64"
+			text-color="#fff" router>
+			<!-- <el-submenu index="1">
 				<template slot="title">
 					<i class="el-icon-location"></i>
 					<span slot="title">系统管理</span>
 				</template>
 				<el-menu-item-group>
 					<el-menu-item index="1-1" @click="$router.replace('/manage')">用户管理</el-menu-item>
-					<el-menu-item index="1-2">菜单管理</el-menu-item>
+					<el-menu-item index="1-2" @click="$router.replace('/menu')">菜单管理</el-menu-item>
 					<el-menu-item index="1-3">角色管理</el-menu-item>
 					<el-menu-item index="1-3">部门管理</el-menu-item>
 				</el-menu-item-group>
@@ -26,8 +27,10 @@
 					<el-menu-item index="2-2">选项2</el-menu-item>
 					<el-menu-item index="2-3">选项3</el-menu-item>
 				</el-menu-item-group>
-			</el-submenu>
-			<el-menu-item index="2">
+			</el-submenu> -->
+
+			<tree-menu :menu="menu"></tree-menu>
+			<el-menu-item index="3">
 				<i class="el-icon-menu"></i>
 				<span slot="title">导航二</span>
 			</el-menu-item>
@@ -39,23 +42,37 @@
 </template>
 
 <script>
+import TreeMenu from "./TreeMenu.vue"
 export default {
 	name: "AsidePage",
-	data(){
+	data () {
 		return {
-			isSpread:false
+			isSpread: false,
+			menu: []
 		}
 	},
 	computed: {
 	},
 	methods: {
-		cutSpread(){
-			this.isSpread=!this.isSpread
+		cutSpread () {
+			this.isSpread = !this.isSpread
 			return this.isSpread
+		},
+		async getMenu () {
+			try {
+				let menu = await this.$api.getMenu()
+				this.menu = menu
+			} catch (error) {
+				console.log(error);
+			}
 		}
 	},
-	created(){
-		this.$bus.$on("cutSpread",this.cutSpread)
+	created () {
+		this.$bus.$on("cutSpread", this.cutSpread)
+		this.getMenu()
+	},
+	components:{
+		TreeMenu
 	}
 }
 </script>
@@ -70,12 +87,12 @@ export default {
 	height: 100%;
 	position: relative;
 
-	.title{
+	.title {
 		height: 60px;
 		color: #fff;
 		background-color: #545c64;
-		
-		h2{
+
+		h2 {
 			line-height: 60px;
 		}
 	}

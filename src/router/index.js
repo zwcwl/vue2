@@ -32,6 +32,15 @@ let routes = [
 					name: "用户管理"
 				},
 				component:()=>import("@/views/userManage/UserManage")
+			},
+			{
+				path:"menu",
+				name:"MenuManage",
+				meta:{
+					requestAuth:true,
+					name:"菜单管理"
+				},
+				component:()=>import("@/views/menuManage/MenuManage")
 			}
 		]
 	},

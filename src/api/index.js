@@ -37,7 +37,7 @@ function delUser(params = {}) {
 
 //获取角色
 function getRole(params={}){
-	return request.get("/roles",params, {mock:true})
+	return request.get("/role",params, {mock:true})
 }
 
 //获取部门

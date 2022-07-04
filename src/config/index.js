@@ -7,7 +7,7 @@ let envConfig={
 	},
 	development:{
 		baseApi:"/api",
-		mockApi:"http://127.0.0.1:4523/m1/1146360-0-default/api"
+		mockApi:"https://www.fastmock.site/mock/1eff10f261bcc283c37ced50e5d0a49f/api"
 	},
 	test:{
 		baseApi:"",
