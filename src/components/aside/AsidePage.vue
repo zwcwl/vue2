@@ -3,8 +3,8 @@
 		<div class="title">
 			<h2>hello</h2>
 		</div>
-		<el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isSpread" background-color="#545c64"
-			text-color="#fff" router @click="aaa">
+		<el-menu :default-active="activeUrl" class="el-menu-vertical-demo" :collapse="isSpread" background-color="#545c64"
+			text-color="#fff" router>
 			<tree-menu :menu="menu"></tree-menu>
 			<el-menu-item index="3">
 				<i class="el-icon-menu"></i>
@@ -24,7 +24,8 @@ export default {
 	data () {
 		return {
 			isSpread: false,
-			menu: []
+			menu: [],
+			activeUrl:""
 		}
 	},
 	computed: {
@@ -41,9 +42,6 @@ export default {
 			} catch (error) {
 				console.log(error);
 			}
-		},
-		aaa(){
-			console.log(1);
 		}
 	},
 	created () {
@@ -52,6 +50,14 @@ export default {
 	},
 	components:{
 		TreeMenu
+	},
+	watch:{
+		$route:{
+			handler(val){
+				this.activeUrl=val.fullPath    
+            },
+            immediate:true
+		}
 	}
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
 	<div id="table-content">
 		<div class="action">
-			<el-button type="primary" @click="dialogShow('create')">添加</el-button>
+			<el-button type="primary" @click="userDialogShow('create')">添加</el-button>
 			<el-button type="danger" @click="handlePatchDel">批量删除</el-button>
 		</div>
 
@@ -15,7 +15,7 @@
 
 			<el-table-column label="操作" width="143px">
 				<template slot-scope="scope">
-					<el-button size="mini" @click="dialogShow('update',scope.row)">编辑</el-button>
+					<el-button size="mini" @click="userDialogShow('update',scope.row)">编辑</el-button>
 					<el-button size="mini" type="danger" @click="handleDel(scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
@@ -149,8 +149,8 @@ export default {
 		},
 
 		//点击显示添加表单
-		dialogShow (action,row) {
-			this.$bus.$emit("dialogShow",{action,...row})
+		userDialogShow (action,row) {
+			this.$bus.$emit("userDialogShow",{action,...row})
 		}
 	},
 	created () {

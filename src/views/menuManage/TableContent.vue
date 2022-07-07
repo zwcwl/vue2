@@ -1,7 +1,7 @@
 <template>
 	<div id="table-content">
 		<div class="action">
-			<el-button type="primary" @click="dialogShow('create')">新增</el-button>
+			<el-button type="primary" @click="menuDialogShow('globalCreate')">新增</el-button>
 		</div>
 
 		<el-table ref="multipleTable" :data="menuList" tooltip-effect="dark" style="width: 100%" stripe border row-key="_id">
@@ -12,12 +12,11 @@
 
 			<el-table-column label="操作" width="220px">
 				<template slot-scope="scope">
-					<el-button size="mini" @click="dialogShow('update', scope.row)">新增</el-button>
-					<el-button size="mini" @click="dialogShow('update', scope.row)">编辑</el-button>
+					<el-button size="mini" @click="menuDialogShow('localityCreate', scope.row)">新增</el-button>
+					<el-button size="mini" @click="menuDialogShow('update', scope.row)">编辑</el-button>
 					<el-button size="mini" type="danger" @click="handleDel(scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
-
 		</el-table>
 	</div>
 </template>
@@ -111,8 +110,8 @@ export default {
 		},
 
 		//点击显示添加表单
-		dialogShow (action, row) {
-			this.$bus.$emit("dialogShow", { action, ...row })
+		menuDialogShow (action, row) {
+			this.$bus.$emit("menuDialogShow", { action, ...row })
 		}
 	},
 	created () {
