@@ -1,6 +1,6 @@
 <template>
 	<div id="query-form">
-		<el-form :inline="true" :model="queryForm" class="demo-form-inline" ref="formquery">
+		<el-form :inline="true" :model="queryForm" class="demo-form-inline" ref="queryForm">
 			<el-form-item label="用户名" prop="userName">
 				<el-input v-model="queryForm.userName" placeholder="请输入用户名"></el-input>
 			</el-form-item>
@@ -17,7 +17,7 @@
 			</el-form-item>
 			<el-form-item>
 				<el-button type="primary" @click="onSubmit">查询</el-button>
-				<el-button type="primary" @click="onReset('formquery')">重置</el-button>
+				<el-button type="primary" @click="onReset('queryForm')">重置</el-button>
 			</el-form-item>
 		</el-form>
 	</div>
@@ -25,6 +25,7 @@
 
 <script>
 export default {
+	name: "QueryForm",
 	data () {
 		return {
 			queryForm: {
@@ -37,7 +38,7 @@ export default {
 	methods: {
 		//点击搜索用户
 		onSubmit () {
-			this.$bus.$emit("getUser",this.queryForm)
+			this.$bus.$emit("getUser", this.queryForm)
 		},
 
 		//点击重置表单
@@ -45,9 +46,9 @@ export default {
 			this.$refs[formName].resetFields();
 		},
 	},
-	mounted(){
-		this.$bus.$emit("getUser",this.queryForm)
-		this.$bus.$on("onSubmit",this.onSubmit)
+	mounted () {
+		this.$bus.$emit("getUser", this.queryForm)
+		this.$bus.$on("onSubmit", this.onSubmit)
 	}
 }
 </script>

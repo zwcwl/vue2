@@ -8,7 +8,7 @@
 				</template>
 				<tree-menu :menu="item.children"></tree-menu>
 			</el-submenu>
-			<el-menu-item v-else-if="item.menuType == 1" :index="item.path" :key="item._id">{{item.menuName}}</el-menu-item>
+			<el-menu-item v-else-if="item.menuType == 1" :index="item.path" v-bind:key="item.menuCode">{{item.menuName}}</el-menu-item>
 		</template>
 	</div>
 </template>
@@ -23,9 +23,6 @@ export default {
 				return []
 			}
 		}
-	},
-	created () {
-		console.log(this.menu);
 	}
 }
 </script>

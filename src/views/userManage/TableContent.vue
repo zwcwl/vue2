@@ -15,9 +15,8 @@
 
 			<el-table-column label="操作" width="143px">
 				<template slot-scope="scope">
-					<el-button size="mini" @click="dialogShow('update',scope.$index, scope.row)">编辑</el-button>
-					<el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
-					</el-button>
+					<el-button size="mini" @click="dialogShow('update',scope.row)">编辑</el-button>
+					<el-button size="mini" type="danger" @click="handleDel(scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -98,7 +97,7 @@ export default {
 	},
 	methods: {
 		//点击删除按钮，删除单个表格
-		async handleDelete (index, row) {
+		async handleDel (row) {
 			try {
 				await this.$api.delUser({ userIds: [row.userId] })
 				this.$bus.$emit("onSubmit")
@@ -150,7 +149,7 @@ export default {
 		},
 
 		//点击显示添加表单
-		dialogShow (action,index,row) {
+		dialogShow (action,row) {
 			this.$bus.$emit("dialogShow",{action,...row})
 		}
 	},

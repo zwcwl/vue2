@@ -1,6 +1,6 @@
 <template>
 	<div id="dialog-form">
-		<el-dialog title="添加用户" :visible.sync="dialogFormVisible" :close-on-click-modal="false" @close="dialogClose">
+		<el-dialog title="添加用户" :visible="dialogVisible" @close="dialogClose">
 			<el-form :model="dialogFrom" :rules="rules" status-icon ref="dialogFrom">
 				<el-form-item label="用户名" label-width="100px" prop="userName">
 					<el-input v-model="dialogFrom.userName" autocomplete="off" placeholder="请输入用户名" prefix-icon="el-icon-user">
@@ -37,7 +37,7 @@
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
-				<el-button @click="dialogFormVisible = false">取 消</el-button>
+				<el-button @click="dialogVisible = false">取 消</el-button>
 				<el-button type="primary" @click="dialogSubmit">确 定</el-button>
 			</div>
 		</el-dialog>
@@ -50,7 +50,8 @@ export default {
 		return {
 			roleList: [],
 			deptList: [],
-			dialogFormVisible: false,
+			dialogVisible : false,
+			action: "",
 			dialogFrom: {
 				userName: "",
 				userEmail: "",
@@ -82,8 +83,7 @@ export default {
 						trigger: "blur"
 					}
 				]
-			},
-			action: ""
+			}
 		}
 	},
 	methods: {
@@ -114,12 +114,12 @@ export default {
 				this.handleEdit(row)
 				return
 			}
-			this.dialogFormVisible = true
+			this.dialogVisible = true
 		},
 
 		//dialog弹窗关闭触发的事件函数
 		dialogClose () {
-			this.dialogFormVisible = false
+			this.dialogVisible = false
 			this.$refs.dialogFrom.resetFields();
 		},
 
@@ -144,7 +144,7 @@ export default {
 		},
 		//点击编辑按钮打开dialogFrom
 		handleEdit (old) {
-			this.dialogFormVisible = true
+			this.dialogVisible = true
 			this.$nextTick(() => {
 				Object.assign(this.dialogFrom, old)
 				this.dialogFrom.userEmail = this.dialogFrom.userEmail.split("@")[0]

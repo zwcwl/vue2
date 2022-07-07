@@ -7,58 +7,70 @@ import storage from "@/utils/storage"
 Vue.use(VueRouter)
 
 let routes = [
+	//首页
 	{
 		path: "/",
 		meta: {
-			requestAuth: true,
 			name: "首页",
+			title:"vue2"
 		},
 		component: () => import("@/views/HomeView"),
 		children: [
+			//欢迎页面
 			{
 				path: "",
 				name: "HelloView",
 				meta: {
 					requestAuth: true,
-					name: "欢迎"
+					name: "欢迎",
+					title:"vue2"
 				},
 				component: () => import("@/views/hello/HelloView")
 			},
+
+			//系统管理
+			//用户管理页面
 			{
-				path:"manage",
-				name:"ManageView",
-				meta:{
+				path: "manage",
+				name: "ManageView",
+				meta: {
 					requestAuth: true,
 					name: "用户管理"
 				},
-				component:()=>import("@/views/userManage/UserManage")
+				component: () => import("@/views/userManage/UserManage")
 			},
+
+			//菜单管理页面
 			{
-				path:"menu",
-				name:"MenuManage",
-				meta:{
-					requestAuth:true,
-					name:"菜单管理"
+				path: "menu",
+				name: "MenuManage",
+				meta: {
+					requestAuth: true,
+					name: "菜单管理"
 				},
-				component:()=>import("@/views/menuManage/MenuManage")
+				component: () => import("@/views/menuManage/MenuManage")
+			},
+
+			//登入页面
+			{
+				path: "/user/login",
+				name: "LoginView",
+				meta: {
+					name: "登入",
+				},
+				component: () => import("@/views/login/LoginView")
+			},
+
+			//未匹配的路由显示的页面
+			{
+				path: "*",
+				name: "NotView",
+				meta: {
+					name: "首页",
+				},
+				component: () => import("@/views/404/NotView")
 			}
 		]
-	},
-	{
-		path: "/user/login",
-		name: "LoginView",
-		meta: {
-			name: "登入",
-		},
-		component: () => import("@/views/login/LoginView")
-	},
-	{
-		path: "*",
-		name: "NotView",
-		meta: {
-			name: "首页",
-		},
-		component: () => import("@/views/404/NotView")
 	}
 ]
 
@@ -78,7 +90,7 @@ let auth = {
 router.beforeEach((to, from, next) => {
 	if (to.matched.some(record => record.meta.requestAuth)) {
 		if (auth.token()) {
-			next({path: '/user/login'},{replace: true})
+			next({ path: '/user/login' }, { replace: true })
 		} else {
 			next()
 		}

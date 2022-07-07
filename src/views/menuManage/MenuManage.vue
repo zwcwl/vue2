@@ -1,13 +1,38 @@
 <template>
-	<div id="menu-manage"></div>
+	<div id="menu-manage">
+		<div class="manage-container">
+			<query-form></query-form>
+
+			<table-content></table-content>
+
+			<dialog-form></dialog-form>
+		</div>
+	</div>
 </template>
 
 <script>
+import QueryForm from './QueryForm.vue'
+import TableContent from './TableContent.vue'
+import DialogForm from './DialogForm.vue'
 export default {
-	name:"MenuManage"
+	name: "ManageView",
+	components: {
+		QueryForm,
+		TableContent,
+		DialogForm
+	}
 }
 </script>
 
 <style lang="scss">
+#menu-manage {
+	padding: 20px;
+	height: 100%;
+	box-sizing: border-box;
 
+	.manage-container {
+		height: 100%;
+		box-sizing: border-box;
+	}
+}
 </style>
