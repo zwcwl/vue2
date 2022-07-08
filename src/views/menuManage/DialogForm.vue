@@ -6,7 +6,8 @@
 
 				<el-form-item label="父级菜单" prop="parentId">
 					<el-cascader v-model="menuDialogForm.parentId" :options="menuList" placeholder="请选择父级菜单"
-						:props="{ checkStrictly: true, label: 'menuName' ,value:'_id' }" clearable style="width: 280px"></el-cascader>
+						:props="{ checkStrictly: true, label: 'menuName', value: '_id' }" clearable style="width: 280px">
+					</el-cascader>
 					<span style="margin-left:26px">当未选择时，将直接创建一级菜单</span>
 				</el-form-item>
 
@@ -57,14 +58,14 @@
 export default {
 	name: "DialogForm",
 	props: ["menuList", "updateMenu"],
-	data () {
+	data() {
 		return {
 			dialogVisible: false,
 			type: "",
 			menuDialogForm: {
 				parentId: [],
-				menuState:1,
-				menuType:1
+				menuState: 1,
+				menuType: 1
 			},
 			rules: {
 				menuName: {
@@ -81,42 +82,48 @@ export default {
 	},
 	methods: {
 		//判断对话框的类型：编辑、局部新增、全局新增
-		menuDialogShow (payload) {
-			console.log(payload);
+		menuDialogShow(payload) {
+			this.dialogVisible = true
 			this.type = payload.type
 			if (payload.type == "localityCreate") {
-				this.addMenuDialog(payload)
-				return 
+				this.localityAddMenu(payload)
+				return
+			} else if (payload.type == "globalCreate") {
+				this.globalAddMenu()
+			}else{
+				this.editMenuDialog(payload)
 			}
-			this.dialogVisible = true
 		},
 
 		//局部新增对话框
-		addMenuLocality (row) {
-			this.dialogVisible = true
-			this.menuDialogForm.parentId=[...row.parentId,row._id].filter((item)=>item)
+		localityAddMenu(row) {
+			this.menuDialogForm.parentId = [...row.parentId, row._id].filter((item) => item)
 		},
 
 		//编辑对话框
-		editMenuDialog(row){
-
+		editMenuDialog(row) {
+			this.$nextTick(()=>{
+				this.menuDialogForm=Object.assign(this.menuDialogForm,row)
+			})
 		},
 
 		//全局新增对话框
-		
+		globalAddMenu() {
+			this.dialogVisible = true
+		},
 
 		//dialog弹窗关闭触发的事件函数
-		closeDialog () {
+		closeDialog() {
 			this.dialogVisible = false
 			this.$refs.menuDialogForm.resetFields();
 		},
 
 		//提交对话框
-		submitDialog () {
+		submitDialog() {
 
 		}
 	},
-	created () {
+	created() {
 		this.$bus.$on("menuDialogShow", this.menuDialogShow)
 	}
 }
