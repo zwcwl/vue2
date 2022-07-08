@@ -3,9 +3,9 @@
 		<div class="manage-container">
 			<query-form></query-form>
 
-			<table-content></table-content>
+			<table-content :menuList="menuList" :updateMenu="updateMenu"></table-content>
 
-			<dialog-form></dialog-form>
+			<dialog-form :menuList="menuList" :updateMenu="updateMenu"></dialog-form>
 		</div>
 	</div>
 </template>
@@ -20,6 +20,16 @@ export default {
 		QueryForm,
 		TableContent,
 		DialogForm
+	},
+	data(){
+		return {
+			menuList: []
+		}
+	},
+	methods:{
+		updateMenu(res){
+			this.menuList=res
+		}
 	}
 }
 </script>

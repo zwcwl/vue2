@@ -31,7 +31,7 @@ let routes = [
 			//系统管理
 			//用户管理页面
 			{
-				path: "manage",
+				path: "system/user",
 				name: "ManageView",
 				meta: {
 					requestAuth: true,
@@ -42,7 +42,7 @@ let routes = [
 
 			//菜单管理页面
 			{
-				path: "menu",
+				path: "system/menu",
 				name: "MenuManage",
 				meta: {
 					requestAuth: true,

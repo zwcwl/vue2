@@ -25,9 +25,9 @@
 import dateFormat from "@/utils/dateFormat"
 export default {
 	name: "TableContent",
+	props:["menuList","updateMenu"],
 	data () {
 		return {
-			menuList: [],
 			actions: "",
 			columns: [
 				{
@@ -43,7 +43,7 @@ export default {
 				{
 					label: "菜单类型",
 					prop: "menuType",
-					width: "180px",
+					width: "80px",
 					formatter (row, column, value) {
 						return {
 							1: "菜单",
@@ -59,12 +59,12 @@ export default {
 				{
 					label: "路由地址",
 					prop: "path",
-					width: "80px"
+					width: "180px"
 				},
 				{
 					label: "组件路径",
 					prop: "component",
-					width: "80px"
+					width: "180px"
 				},
 				{
 					label: "菜单状态",
@@ -103,15 +103,15 @@ export default {
 		async getMenu (queryForm = []) {
 			try {
 				let res = await this.$api.getMenu(queryForm)
-				this.menuList = res
+				this.updateMenu(res)
 			} catch (error) {
 				console.log(error)
 			}
 		},
 
 		//点击显示添加表单
-		menuDialogShow (action, row) {
-			this.$bus.$emit("menuDialogShow", { action, ...row })
+		menuDialogShow (type, row) {
+			this.$bus.$emit("menuDialogShow", { type, ...row })
 		}
 	},
 	created () {

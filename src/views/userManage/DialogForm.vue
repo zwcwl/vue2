@@ -1,38 +1,37 @@
 <template>
 	<div id="dialog-form">
 		<el-dialog title="添加用户" :visible="dialogVisible" @close="closeDialog" :close-on-click-modal="false">
-			<el-form :model="userDialogform" :rules="rules" status-icon ref="userDialogform">
-				<el-form-item label="用户名" label-width="100px" prop="userName">
+			<el-form :model="userDialogform" :rules="rules" status-icon ref="userDialogform" label-width="100px">
+				<el-form-item label="用户名" prop="userName">
 					<el-input v-model="userDialogform.userName" autocomplete="off" placeholder="请输入用户名"
 						prefix-icon="el-icon-user">
 					</el-input>
 				</el-form-item>
-				<el-form-item label="邮箱" label-width="100px" prop="userEmail">
-					<el-input v-model="userDialogform.userEmail" autocomplete="off" placeholder="请输入用户邮箱"
-						prefix-icon="">
+				<el-form-item label="邮箱" prop="userEmail">
+					<el-input v-model="userDialogform.userEmail" autocomplete="off" placeholder="请输入用户邮箱" prefix-icon="">
 						<template #append>@163.com</template>
 					</el-input>
 				</el-form-item>
-				<el-form-item label="手机号" label-width="100px" prop="mobile">
+				<el-form-item label="手机号" prop="mobile">
 					<el-input v-model="userDialogform.mobile" autocomplete="off" placeholder="请输入手机号"></el-input>
 				</el-form-item>
-				<el-form-item label="岗位" label-width="100px" prop="job">
+				<el-form-item label="岗位" prop="job">
 					<el-input v-model="userDialogform.job" autocomplete="off" placeholder="请选择岗位"></el-input>
 				</el-form-item>
-				<el-form-item label="用户状态" label-width="100px" prop="userState">
+				<el-form-item label="用户状态" prop="userState">
 					<el-select v-model="userDialogform.userState" placeholder="请选择用户状态" style="width: 100%">
 						<el-option :value="1" label="在职"></el-option>
 						<el-option :value="2" label="离职"></el-option>
 						<el-option :value="3" label="试用期"></el-option>
 					</el-select>
 				</el-form-item>
-				<el-form-item label="系统角色" label-width="100px" prop="systemRole">
+				<el-form-item label="系统角色" prop="systemRole">
 					<el-select v-model="userDialogform.systemRole" placeholder="请选择系统角色" multiple style="width: 100%">
 						<el-option v-for="role in roleList" :key="role._id" :label="role.roleName" :value="role._id">
 						</el-option>
 					</el-select>
 				</el-form-item>
-				<el-form-item label="部门" label-width="100px" prop="deptList">
+				<el-form-item label="部门" prop="deptList">
 					<el-cascader v-model="userDialogform.deptList" :options="deptList" placeholder="请选择所属部门"
 						:props="{ multiple: true, checkStrictly: true, value: '_id', label: 'deptName' }" clearable
 						style="width: 100%">
@@ -49,7 +48,7 @@
 
 <script>
 export default {
-	data() {
+	data () {
 		return {
 			roleList: [],
 			deptList: [],
@@ -91,7 +90,7 @@ export default {
 	},
 	methods: {
 		//获取部门列表
-		async getDept() {
+		async getDept () {
 			try {
 				let list = await this.$api.getDept()
 				this.deptList = list
@@ -101,7 +100,7 @@ export default {
 		},
 
 		//获取角色列表
-		async getRole() {
+		async getRole () {
 			try {
 				let list = await this.$api.getRole()
 				this.roleList = list
@@ -111,7 +110,7 @@ export default {
 		},
 
 		//打开dialog弹窗表单
-		userDialogShow(row) {
+		userDialogShow (row) {
 			this.action = row.action
 			if (row.action === "update") {
 				this.editDialog(row)
@@ -121,13 +120,13 @@ export default {
 		},
 
 		//dialog弹窗关闭触发的事件函数
-		closeDialog() {
+		closeDialog () {
 			this.dialogVisible = false
 			this.$refs.userDialogform.resetFields();
 		},
 
 		//dialog弹窗提交时触发的事件函数
-		async submitDialog() {
+		async submitDialog () {
 			try {
 				this.$refs.userDialogform.validate(async (valid) => {
 					if (valid) {
@@ -150,7 +149,7 @@ export default {
 		},
 
 		//点击编辑按钮打开userDialogform
-		editDialog(old) {
+		editDialog (old) {
 			this.dialogVisible = true
 			this.$nextTick(() => {
 				Object.assign(this.userDialogform, old)
@@ -158,7 +157,7 @@ export default {
 			})
 		},
 	},
-	created() {
+	created () {
 		this.$bus.$on("userDialogShow", this.userDialogShow)
 		this.getRole()
 		this.getDept()
