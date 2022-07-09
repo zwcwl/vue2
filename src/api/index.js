@@ -45,6 +45,21 @@ function getDept(params={}){
 	return request.get("/dept",params, {mock:true})
 }
 
+//新增菜单
+function postMenu(params=[]){
+	return request.post("/menu",params,{mock:false})
+}
+
+//编辑菜单
+function putMenu(params=[]){
+	return request.put("/menu",params,{mock:false})
+}
+
+//删除菜单
+function delMenu(params=[]){
+	return request.delete("/menu",params,{mock:true})
+}
+
 export default {
 	usersLogin,
 	getUndone,
@@ -54,5 +69,8 @@ export default {
 	getRole,
 	getDept,
 	postUser,
-	putUser
+	putUser,
+	postMenu,
+	putMenu,
+	delMenu
 }

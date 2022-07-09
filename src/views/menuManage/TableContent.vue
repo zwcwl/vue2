@@ -14,7 +14,7 @@
 				<template slot-scope="scope">
 					<el-button size="mini" @click="menuDialogShow('localityCreate', scope.row)">新增</el-button>
 					<el-button size="mini" @click="menuDialogShow('update', scope.row)">编辑</el-button>
-					<el-button size="mini" type="danger" @click="handleDel(scope.row)">删除</el-button>
+					<el-button size="mini" dialogType="danger" @click="handleDel(scope.row._id)">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -42,7 +42,7 @@ export default {
 				},
 				{
 					label: "菜单类型",
-					prop: "menuType",
+					prop: "menudialogType",
 					width: "80px",
 					formatter (row, column, value) {
 						return {
@@ -89,9 +89,9 @@ export default {
 	},
 	methods: {
 		//点击删除按钮，删除单个表格
-		async handleDel (row) {
+		async handleDel (id) {
 			try {
-				await this.$api.delUser({ userIds: [row.userId] })
+				await this.$api.delMenu(id)
 				this.$bus.$emit("onSubmit")
 				this.$message.success("删除成功");
 			} catch (error) {
@@ -110,8 +110,8 @@ export default {
 		},
 
 		//点击显示添加表单
-		menuDialogShow (type, row) {
-			this.$bus.$emit("menuDialogShow", { type, ...row })
+		menuDialogShow (dialogType, row) {
+			this.$bus.$emit("menuDialogShow", dialogType,row)
 		}
 	},
 	created () {

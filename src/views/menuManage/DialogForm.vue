@@ -1,6 +1,6 @@
 <template>
 	<div id="dialog-form">
-		<el-dialog :title="type == 'update' ? '更新菜单' : '新增菜单'" :visible="dialogVisible" @close="closeDialog"
+		<el-dialog :title="dialogType == 'update' ? '更新菜单' : '新增菜单'" :visible="dialogVisible" @close="closeDialog"
 			:close-on-click-modal="false">
 			<el-form ref="menuDialogForm" :model="menuDialogForm" status-icon :rules="rules" label-width="100px">
 
@@ -11,8 +11,8 @@
 					<span style="margin-left:26px">当未选择时，将直接创建一级菜单</span>
 				</el-form-item>
 
-				<el-form-item label="菜单类型" prop="menuType">
-					<el-radio-group v-model="menuDialogForm.menuType">
+				<el-form-item label="菜单类型" prop="menudialogType">
+					<el-radio-group v-model="menuDialogForm.menudialogType">
 						<el-radio :label="1">菜单</el-radio>
 						<el-radio :label="2">按钮</el-radio>
 					</el-radio-group>
@@ -22,11 +22,11 @@
 					<el-input v-model="menuDialogForm.menuName" placeholder="请输入菜单名称"></el-input>
 				</el-form-item>
 
-				<el-form-item label="菜单图标" prop="icon" v-show="menuDialogForm.menuType == 1">
+				<el-form-item label="菜单图标" prop="icon" v-show="menuDialogForm.menudialogType == 1">
 					<el-input v-model="menuDialogForm.icon" placeholder="请输入菜单图标"></el-input>
 				</el-form-item>
 
-				<el-form-item label="路由地址" prop="path" v-show="menuDialogForm.menuType == 1">
+				<el-form-item label="路由地址" prop="path" v-show="menuDialogForm.menudialogType == 1">
 					<el-input v-model="menuDialogForm.path" placeholder="请输入路由地址"></el-input>
 				</el-form-item>
 
@@ -34,7 +34,7 @@
 					<el-input v-model="menuDialogForm.menuCode" placeholder="请输入权限标识"></el-input>
 				</el-form-item>
 
-				<el-form-item label="组件路径" prop="component" v-show="menuDialogForm.menuType == 1">
+				<el-form-item label="组件路径" prop="component" v-show="menuDialogForm.menudialogType == 1">
 					<el-input v-model="menuDialogForm.component" placeholder="请输入组件路径"></el-input>
 				</el-form-item>
 
@@ -48,7 +48,7 @@
 
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="dialogVisible = false">取 消</el-button>
-				<el-button type="primary" @click="submitDialog">确 定</el-button>
+				<el-button dialogType="primary" @click="submitDialog">确 定</el-button>
 			</div>
 		</el-dialog>
 	</div>
@@ -58,14 +58,17 @@
 export default {
 	name: "DialogForm",
 	props: ["menuList", "updateMenu"],
-	data() {
+	data () {
 		return {
 			dialogVisible: false,
-			type: "",
+			dialogType: "",
 			menuDialogForm: {
 				parentId: [],
 				menuState: 1,
-				menuType: 1
+				menudialogType: 1,
+				menuName: "",
+				path: "",
+				component: ""
 			},
 			rules: {
 				menuName: {
@@ -73,57 +76,64 @@ export default {
 				},
 				path: {
 					required: true, message: '请输入路由地址', trigger: 'blur'
-				},
-				component: {
-					required: true, message: '请输入组件路径', trigger: 'blur'
-				},
+				}
 			}
 		}
 	},
 	methods: {
 		//判断对话框的类型：编辑、局部新增、全局新增
-		menuDialogShow(payload) {
+		menuDialogShow (dialogType,row) {
 			this.dialogVisible = true
-			this.type = payload.type
-			if (payload.type == "localityCreate") {
-				this.localityAddMenu(payload)
-				return
-			} else if (payload.type == "globalCreate") {
-				this.globalAddMenu()
-			}else{
-				this.editMenuDialog(payload)
+			this.dialogType = dialogType
+			if (dialogType == "localityCreate") {
+				this.localityAddMenu(row)
+			} else if (dialogType == "update") {
+				this.editMenuDialog(row)
 			}
 		},
 
 		//局部新增对话框
-		localityAddMenu(row) {
+		localityAddMenu (row) {
 			this.menuDialogForm.parentId = [...row.parentId, row._id].filter((item) => item)
 		},
 
 		//编辑对话框
-		editMenuDialog(row) {
-			this.$nextTick(()=>{
-				this.menuDialogForm=Object.assign(this.menuDialogForm,row)
+		editMenuDialog (row) {
+			this.$nextTick(() => {
+				Object.assign(this.menuDialogForm, row)
+				this.menuDialogForm.parentId = [...row.parentId, row._id].filter((item) => item)
 			})
 		},
 
-		//全局新增对话框
-		globalAddMenu() {
-			this.dialogVisible = true
-		},
-
 		//dialog弹窗关闭触发的事件函数
-		closeDialog() {
+		closeDialog () {
 			this.dialogVisible = false
 			this.$refs.menuDialogForm.resetFields();
 		},
 
 		//提交对话框
-		submitDialog() {
-
+		submitDialog () {
+			let { dialogType, menuDialogForm } = this
+			this.$refs.menuDialogForm.validate(async (valid) => {
+				if (!valid) return
+				try {
+					if (dialogType == "localityCreate" || dialogType == "globalCreate") {
+						await this.$api.postMenu(menuDialogForm)
+						this.$message.success("菜单新增成功")
+					} else {
+						console.log(menuDialogForm);
+						await this.$api.putMenu(menuDialogForm)
+						this.$message.success("菜单更新成功")
+					}
+					this.closeDialog()
+					// this.$bus.$emit("onSubmit")
+				} catch (error) {
+					this.$message.success("操作失败");
+				}
+			})
 		}
 	},
-	created() {
+	created () {
 		this.$bus.$on("menuDialogShow", this.menuDialogShow)
 	}
 }

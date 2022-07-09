@@ -53,7 +53,7 @@ export default {
 			roleList: [],
 			deptList: [],
 			dialogVisible: false,
-			action: "",
+			dialogType: "",
 			userDialogform: {
 				userName: "",
 				userEmail: "",
@@ -110,9 +110,9 @@ export default {
 		},
 
 		//打开dialog弹窗表单
-		userDialogShow (row) {
-			this.action = row.action
-			if (row.action === "update") {
+		userDialogShow (dialogType,row) {
+			this.dialogType = dialogType
+			if (dialogType === "update") {
 				this.editDialog(row)
 				return
 			}
@@ -132,7 +132,7 @@ export default {
 					if (valid) {
 						let data = JSON.parse(JSON.stringify(this.userDialogform))
 						data.userEmail += "@163.com"
-						if (this.action === "update") {
+						if (this.dialogType === "update") {
 							await this.$api.putUser(data)
 							this.$message.success("用户更新成功")
 						} else {
@@ -149,10 +149,10 @@ export default {
 		},
 
 		//点击编辑按钮打开userDialogform
-		editDialog (old) {
+		editDialog (row) {
 			this.dialogVisible = true
 			this.$nextTick(() => {
-				Object.assign(this.userDialogform, old)
+				Object.assign(this.userDialogform, row)
 				this.userDialogform.userEmail = this.userDialogform.userEmail.split("@")[0]
 			})
 		},

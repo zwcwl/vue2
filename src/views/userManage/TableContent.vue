@@ -149,8 +149,8 @@ export default {
 		},
 
 		//点击显示添加表单
-		userDialogShow (action,row) {
-			this.$bus.$emit("userDialogShow",{action,...row})
+		userDialogShow (dialogType,row) {
+			this.$bus.$emit("userDialogShow",dialogType,row)
 		}
 	},
 	created () {
