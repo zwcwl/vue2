@@ -12,9 +12,9 @@
 
 			<el-table-column label="操作" width="220px">
 				<template slot-scope="scope">
-					<el-button size="mini" @click="menuDialogShow('localityCreate', scope.row)">新增</el-button>
-					<el-button size="mini" @click="menuDialogShow('update', scope.row)">编辑</el-button>
-					<el-button size="mini" dialogType="danger" @click="handleDel(scope.row._id)">删除</el-button>
+					<el-button size="mini" type="primary" @click="menuDialogShow('localityCreate', scope.row)">新增</el-button>
+					<el-button size="mini" type="info" @click="menuDialogShow('update', scope.row)">编辑</el-button>
+					<el-button size="mini" type="danger" @click="handleDel(scope.row._id)">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -91,6 +91,7 @@ export default {
 		//点击删除按钮，删除单个表格
 		async handleDel (id) {
 			try {
+				console.log(id);
 				await this.$api.delMenu(id)
 				this.$bus.$emit("onSubmit")
 				this.$message.success("删除成功");

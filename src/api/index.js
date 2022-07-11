@@ -12,7 +12,7 @@ function getUndone(params = {}) {
 
 //获取菜单项
 function getMenu(params = {}) {
-	return request.get("/menu", params, {mock:true})
+	return request.get("/menu", params, {mock:false})
 }
 
 //获取用户
@@ -57,7 +57,7 @@ function putMenu(params=[]){
 
 //删除菜单
 function delMenu(params=[]){
-	return request.delete("/menu",params,{mock:true})
+	return request.delete("/menu",params,{mock:false})
 }
 
 export default {

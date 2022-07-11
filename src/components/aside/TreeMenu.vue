@@ -1,7 +1,7 @@
 <template>
 	<div class="tree-menu">
 		<template v-for="item in menu">
-			<el-submenu :key="item._id" v-if="item.children.length > 0 && item.children && item.children[0].menuType == 1" :index="item.path">
+			<el-submenu :key="item._id" v-if="item.children && item.children.length > 0 && item.children[0].menuType == 1" :index="item.path">
 				<template slot="title">
 					<i :class="item.icon"></i>
 					<span slot="title">{{item.menuName}}</span>

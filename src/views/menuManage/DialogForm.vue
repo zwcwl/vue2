@@ -6,13 +6,13 @@
 
 				<el-form-item label="父级菜单" prop="parentId">
 					<el-cascader v-model="menuDialogForm.parentId" :options="menuList" placeholder="请选择父级菜单"
-						:props="{ checkStrictly: true, label: 'menuName', value: '_id' }" clearable style="width: 280px">
+						:props="{ checkStrictly: true, label: 'menuName', value: '_id' }" clearable style="width: 280px" :disabled="dialogType=='update'">
 					</el-cascader>
 					<span style="margin-left:26px">当未选择时，将直接创建一级菜单</span>
 				</el-form-item>
 
-				<el-form-item label="菜单类型" prop="menudialogType">
-					<el-radio-group v-model="menuDialogForm.menudialogType">
+				<el-form-item label="菜单类型" prop="menuType">
+					<el-radio-group v-model="menuDialogForm.menuType">
 						<el-radio :label="1">菜单</el-radio>
 						<el-radio :label="2">按钮</el-radio>
 					</el-radio-group>
@@ -22,11 +22,11 @@
 					<el-input v-model="menuDialogForm.menuName" placeholder="请输入菜单名称"></el-input>
 				</el-form-item>
 
-				<el-form-item label="菜单图标" prop="icon" v-show="menuDialogForm.menudialogType == 1">
+				<el-form-item label="菜单图标" prop="icon" v-show="menuDialogForm.menuType == 1">
 					<el-input v-model="menuDialogForm.icon" placeholder="请输入菜单图标"></el-input>
 				</el-form-item>
 
-				<el-form-item label="路由地址" prop="path" v-show="menuDialogForm.menudialogType == 1">
+				<el-form-item label="路由地址" prop="path" v-show="menuDialogForm.menuType == 1">
 					<el-input v-model="menuDialogForm.path" placeholder="请输入路由地址"></el-input>
 				</el-form-item>
 
@@ -34,7 +34,7 @@
 					<el-input v-model="menuDialogForm.menuCode" placeholder="请输入权限标识"></el-input>
 				</el-form-item>
 
-				<el-form-item label="组件路径" prop="component" v-show="menuDialogForm.menudialogType == 1">
+				<el-form-item label="组件路径" prop="component" v-show="menuDialogForm.menuType == 1">
 					<el-input v-model="menuDialogForm.component" placeholder="请输入组件路径"></el-input>
 				</el-form-item>
 
@@ -63,9 +63,9 @@ export default {
 			dialogVisible: false,
 			dialogType: "",
 			menuDialogForm: {
-				parentId: [],
+				parentId: [null],
 				menuState: 1,
-				menudialogType: 1,
+				menuType: 1,
 				menuName: "",
 				path: "",
 				component: ""
@@ -100,6 +100,7 @@ export default {
 		//编辑对话框
 		editMenuDialog (row) {
 			this.$nextTick(() => {
+				delete row.children
 				Object.assign(this.menuDialogForm, row)
 				this.menuDialogForm.parentId = [...row.parentId, row._id].filter((item) => item)
 			})
