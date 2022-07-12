@@ -25,7 +25,7 @@ export default {
 		return {
 			isSpread: false,
 			menu: [],
-			activeUrl:""
+			activeUrl: ""
 		}
 	},
 	computed: {
@@ -46,17 +46,17 @@ export default {
 	},
 	created () {
 		this.$bus.$on("cutSpread", this.cutSpread)
-		this.getMenu()
+		// this.getMenu()
 	},
-	components:{
+	components: {
 		TreeMenu
 	},
-	watch:{
-		$route:{
-			handler(val){
-				this.activeUrl=val.fullPath    
-            },
-            immediate:true
+	watch: {
+		$route: {
+			handler (val) {
+				this.activeUrl = val.fullPath
+			},
+			immediate: true
 		}
 	}
 }
