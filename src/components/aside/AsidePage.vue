@@ -6,10 +6,6 @@
 		<el-menu :default-active="activeUrl" class="el-menu-vertical-demo" :collapse="isSpread" background-color="#545c64"
 			text-color="#fff" router>
 			<tree-menu :menu="menu"></tree-menu>
-			<el-menu-item index="3">
-				<i class="el-icon-menu"></i>
-				<span slot="title">导航二</span>
-			</el-menu-item>
 		</el-menu>
 		<div class="spread-shrink" @click="cutSpread">
 			<el-button type="primary" :icon="isSpread ? 'el-icon-s-unfold' : 'el-icon-s-fold'"></el-button>
@@ -46,7 +42,7 @@ export default {
 	},
 	created () {
 		this.$bus.$on("cutSpread", this.cutSpread)
-		// this.getMenu()
+		this.getMenu()
 	},
 	components: {
 		TreeMenu

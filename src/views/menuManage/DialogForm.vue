@@ -68,14 +68,12 @@ export default {
 				menuType: 1,
 				menuName: "",
 				path: "",
-				component: ""
+				component: "",
+				icon:""
 			},
 			rules: {
 				menuName: {
 					required: true, message: '请输入菜单名称', trigger: 'blur'
-				},
-				path: {
-					required: true, message: '请输入路由地址', trigger: 'blur'
 				}
 			}
 		}
@@ -101,8 +99,7 @@ export default {
 		editMenuDialog (row) {
 			this.$nextTick(() => {
 				delete row.children
-				Object.assign(this.menuDialogForm, row)
-				this.menuDialogForm.parentId = [...row.parentId, row._id].filter((item) => item)
+				Object.assign(this.menuDialogForm,row)
 			})
 		},
 

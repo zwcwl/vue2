@@ -8,7 +8,10 @@
 				</template>
 				<tree-menu :menu="item.children"></tree-menu>
 			</el-submenu>
-			<el-menu-item v-else-if="item.menuType == 1" :index="item.path" v-bind:key="item.menuCode">{{item.menuName}}</el-menu-item>
+			<el-menu-item v-else-if="item.menuType == 1" :index="item.path" v-bind:key="item.menuCode">
+				<i :class="item.icon"></i>
+				<span slot="title">{{item.menuName}}</span>
+			</el-menu-item>
 		</template>
 	</div>
 </template>
