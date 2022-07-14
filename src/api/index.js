@@ -35,9 +35,9 @@ function delUser(params = {}) {
 	return request.delete("/users", params)
 }
 
-//获取角色
-function getRole(params={}){
-	return request.get("/role",params, {mock:true})
+//获取角色用于创建用户
+function getRoleGain(params={}){
+	return request.get("/role/gain",params, {mock:true})
 }
 
 //获取部门
@@ -60,17 +60,27 @@ function delMenu(params=[]){
 	return request.delete("/menu",params,{mock:false})
 }
 
+//获取角色，用来显示角色列表
+function getRole(params=[]){
+	return request.get(
+		"/role",
+		params,
+		{mock:true}
+	)
+}
+
 export default {
 	usersLogin,
 	getUndone,
 	getMenu,
 	getUser,
 	delUser,
-	getRole,
+	getRoleGain,
 	getDept,
 	postUser,
 	putUser,
 	postMenu,
 	putMenu,
-	delMenu
+	delMenu,
+	getRole
 }

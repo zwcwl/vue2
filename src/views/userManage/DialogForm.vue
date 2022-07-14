@@ -100,9 +100,9 @@ export default {
 		},
 
 		//获取角色列表
-		async getRole () {
+		async getRoleGain () {
 			try {
-				let list = await this.$api.getRole()
+				let list = await this.$api.getRoleGain()
 				this.roleList = list
 			} catch (error) {
 				console.log(error)
@@ -159,7 +159,7 @@ export default {
 	},
 	created () {
 		this.$bus.$on("userDialogShow", this.userDialogShow)
-		this.getRole()
+		this.getRoleGain()
 		this.getDept()
 	},
 }

@@ -51,6 +51,17 @@ let routes = [
 				component: () => import("@/views/menuManage/MenuManage")
 			},
 
+			//角色管理页面
+			{
+				path: "system/role",
+				name: "RoleManage",
+				meta: {
+					requestAuth: true,
+					name: "角色管理"
+				},
+				component: () => import("@/views/roleManage/RoleManage")
+			},
+
 			//登入页面
 			{
 				path: "/user/login",
