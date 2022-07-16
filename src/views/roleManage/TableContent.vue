@@ -1,7 +1,7 @@
 <template>
 	<div id="table-content">
 		<div class="action">
-			<el-button type="primary" @click="menuDialogShow('globalCreate')">新增</el-button>
+			<el-button type="primary" @click="roleDialogShow('create')">新增</el-button>
 		</div>
 
 		<el-table ref="multipleTable" :data="roleList" tooltip-effect="dark" style="width: 100%" stripe border row-key="_id">
@@ -12,8 +12,8 @@
 
 			<el-table-column label="操作" width="260px">
 				<template slot-scope="scope">
-					<el-button size="mini" type="primary" @click="menuDialogShow('localityCreate', scope.row)">编辑</el-button>
-					<el-button size="mini" type="info" @click="menuDialogShow('update', scope.row)">设置权限</el-button>
+					<el-button size="mini" type="primary" @click="roleDialogShow('update', scope.row)">编辑</el-button>
+					<el-button size="mini" type="info" @click="editDialog(scope.row)">设置权限</el-button>
 					<el-button size="mini" type="danger" @click="handleDel(scope.row._id)">删除</el-button>
 				</template>
 			</el-table-column>
@@ -78,8 +78,12 @@ export default {
 		},
 
 		//点击显示添加表单
-		menuDialogShow (dialogType, row) {
-			this.$bus.$emit("menuDialogShow", dialogType,row)
+		roleDialogShow (dialogType, row) {
+			this.$bus.$emit("roleDialogShow", dialogType,row)
+		},
+
+		editDialog(row){
+			this.$bus.$emit("editDialog",row)
 		},
 
 		//点击左右分页按钮，取得当前的页码，重新请求列表

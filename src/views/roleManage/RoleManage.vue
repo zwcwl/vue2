@@ -6,6 +6,8 @@
 			<table-content :roleList="roleList" :updateRole="updateRole" :page="page"></table-content>
 
 			<dialog-form :roleList="roleList" :updateRole="updateRole"></dialog-form>
+
+			<edit-dialog></edit-dialog>
 		</div>
 	</div>
 </template>
@@ -14,12 +16,14 @@
 import QueryForm from './QueryForm.vue'
 import TableContent from './TableContent.vue'
 import DialogForm from './DialogForm.vue'
+import EditDialog from "./EditDialog.vue"
 export default {
 	name: "ManageView",
 	components: {
 		QueryForm,
 		TableContent,
-		DialogForm
+		DialogForm,
+		EditDialog
 	},
 	data(){
 		return {

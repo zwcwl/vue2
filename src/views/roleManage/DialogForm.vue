@@ -2,47 +2,13 @@
 	<div id="dialog-form">
 		<el-dialog :title="dialogType == 'update' ? '更新菜单' : '新增菜单'" :visible="dialogVisible" @close="closeDialog"
 			:close-on-click-modal="false">
-			<el-form ref="menuDialogForm" :model="menuDialogForm" status-icon :rules="rules" label-width="100px">
-
-				<el-form-item label="父级菜单" prop="parentId">
-					<el-cascader v-model="menuDialogForm.parentId" :options="roleList" placeholder="请选择父级菜单"
-						:props="{ checkStrictly: true, label: 'menuName', value: '_id' }" clearable style="width: 280px" :disabled="dialogType=='update'">
-					</el-cascader>
-					<span style="margin-left:26px">当未选择时，将直接创建一级菜单</span>
+			<el-form ref="roleDialogForm" :model="roleDialogForm" status-icon :rules="rules" label-width="100px">
+				<el-form-item label="角色名称" prop="roleName">
+					<el-input v-model="roleDialogForm.roleName" placeholder="请输入角色名称"></el-input>
 				</el-form-item>
 
-				<el-form-item label="菜单类型" prop="menuType">
-					<el-radio-group v-model="menuDialogForm.menuType">
-						<el-radio :label="1">菜单</el-radio>
-						<el-radio :label="2">按钮</el-radio>
-					</el-radio-group>
-				</el-form-item>
-
-				<el-form-item label="菜单名称" prop="menuName">
-					<el-input v-model="menuDialogForm.menuName" placeholder="请输入菜单名称"></el-input>
-				</el-form-item>
-
-				<el-form-item label="菜单图标" prop="icon" v-show="menuDialogForm.menuType == 1">
-					<el-input v-model="menuDialogForm.icon" placeholder="请输入菜单图标"></el-input>
-				</el-form-item>
-
-				<el-form-item label="路由地址" prop="path" v-show="menuDialogForm.menuType == 1">
-					<el-input v-model="menuDialogForm.path" placeholder="请输入路由地址"></el-input>
-				</el-form-item>
-
-				<el-form-item label="权限标识" prop="menuCode">
-					<el-input v-model="menuDialogForm.menuCode" placeholder="请输入权限标识"></el-input>
-				</el-form-item>
-
-				<el-form-item label="组件路径" prop="component" v-show="menuDialogForm.menuType == 1">
-					<el-input v-model="menuDialogForm.component" placeholder="请输入组件路径"></el-input>
-				</el-form-item>
-
-				<el-form-item label="菜单状态" prop="menuState">
-					<el-radio-group v-model="menuDialogForm.menuState">
-						<el-radio :label="1">正常</el-radio>
-						<el-radio :label="2">失效</el-radio>
-					</el-radio-group>
+				<el-form-item label="备注" prop="remark">
+					<el-input type="textarea" v-model="roleDialogForm.remark" placeholder="请输入备注"></el-input>
 				</el-form-item>
 			</el-form>
 
@@ -62,65 +28,51 @@ export default {
 		return {
 			dialogVisible: false,
 			dialogType: "",
-			menuDialogForm: {
-				parentId: [null],
-				menuState: 1,
-				menuType: 1,
-				menuName: "",
-				path: "",
-				component: "",
-				icon:""
+			roleDialogForm: {
+				roleName:"",
+				remark:""
 			},
 			rules: {
-				menuName: {
-					required: true, message: '请输入菜单名称', trigger: 'blur'
+				roleName: {
+					required: true, message: '请输入角色名称', trigger: 'blur'
 				}
 			}
 		}
 	},
 	methods: {
-		//判断对话框的类型：编辑、局部新增、全局新增
-		menuDialogShow (dialogType,row) {
+		//判断对话框的类型：编辑、新增
+		roleDialogShow (dialogType,row) {
 			this.dialogVisible = true
 			this.dialogType = dialogType
-			if (dialogType == "localityCreate") {
-				this.localityAddMenu(row)
-			} else if (dialogType == "update") {
-				this.editMenuDialog(row)
+			if (dialogType == "update") {
+				this.editRoleDialog(row)
 			}
 		},
 
-		//局部新增对话框
-		localityAddMenu (row) {
-			this.menuDialogForm.parentId = [...row.parentId, row._id].filter((item) => item)
-		},
-
 		//编辑对话框
-		editMenuDialog (row) {
+		editRoleDialog (row) {
 			this.$nextTick(() => {
-				delete row.children
-				Object.assign(this.menuDialogForm,row)
+				Object.assign(this.roleDialogForm,row)
 			})
 		},
 
 		//dialog弹窗关闭触发的事件函数
 		closeDialog () {
 			this.dialogVisible = false
-			this.$refs.menuDialogForm.resetFields();
+			this.$refs.roleDialogForm.resetFields();
 		},
 
 		//提交对话框
 		submitDialog () {
-			let { dialogType, menuDialogForm } = this
-			this.$refs.menuDialogForm.validate(async (valid) => {
+			let { dialogType, roleDialogForm } = this
+			this.$refs.roleDialogForm.validate(async (valid) => {
 				if (!valid) return
 				try {
-					if (dialogType == "localityCreate" || dialogType == "globalCreate") {
-						await this.$api.postMenu(menuDialogForm)
+					if (dialogType == "create") {
+						await this.$api.postRole(roleDialogForm)
 						this.$message.success("菜单新增成功")
 					} else {
-						console.log(menuDialogForm);
-						await this.$api.putMenu(menuDialogForm)
+						await this.$api.putRole(roleDialogForm)
 						this.$message.success("菜单更新成功")
 					}
 					this.closeDialog()
@@ -132,7 +84,7 @@ export default {
 		}
 	},
 	created () {
-		this.$bus.$on("menuDialogShow", this.menuDialogShow)
+		this.$bus.$on("roleDialogShow", this.roleDialogShow)
 	}
 }
 </script>
