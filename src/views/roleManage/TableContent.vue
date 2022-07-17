@@ -4,7 +4,8 @@
 			<el-button type="primary" @click="roleDialogShow('create')">新增</el-button>
 		</div>
 
-		<el-table ref="multipleTable" :data="roleList" tooltip-effect="dark" style="width: 100%" stripe border row-key="_id">
+		<el-table ref="multipleTable" :data="roleList" tooltip-effect="dark" style="width: 100%" stripe border
+			row-key="_id">
 
 			<el-table-column v-for="item in columns" :key="item.prop" :label="item.label" :prop="item.prop"
 				:formatter="item.formatter" :width="item.width">
@@ -27,7 +28,7 @@
 import dateFormat from "@/utils/dateFormat"
 export default {
 	name: "TableContent",
-	props:["roleList","updateRole","page"],
+	props: ["roleList", "updateRole", "page"],
 	data () {
 		return {
 			actions: "",
@@ -42,7 +43,20 @@ export default {
 				},
 				{
 					label: "权限列表",
-					prop: "roleList",
+					prop: "permissionList",
+					formatter (row, column, value) {
+						let names=[]
+						let arr={
+							"600d525e602f452aaeeffcd9":"用户管理"
+						}
+						let list=value.halfCheckedKeys || []
+						list.map(key=>{
+							if(key){
+								names.push(arr[key])
+							}
+						})
+						return names
+					}
 				},
 				{
 					label: "注册时间",
@@ -56,16 +70,16 @@ export default {
 	},
 	methods: {
 		//点击删除按钮，删除单个表格
-		async handleDel (id) {
-			try {
-				console.log(id);
-				await this.$api.delMenu(id)
-				this.$bus.$emit("onSubmit")
-				this.$message.success("删除成功");
-			} catch (error) {
-				this.$message.success("删除失败");
-			}
-		},
+		// async handleDel (id) {
+		// 	try {
+		// 		console.log(id);
+		// 		await this.$api.delMenu(id)
+		// 		this.$bus.$emit("onSubmit")
+		// 		this.$message.success("删除成功");
+		// 	} catch (error) {
+		// 		this.$message.success("删除失败");
+		// 	}
+		// },
 
 		//获取用户列表函数
 		async getRole (queryForm = []) {
@@ -79,11 +93,11 @@ export default {
 
 		//点击显示添加表单
 		roleDialogShow (dialogType, row) {
-			this.$bus.$emit("roleDialogShow", dialogType,row)
+			this.$bus.$emit("roleDialogShow", dialogType, row)
 		},
 
-		editDialog(row){
-			this.$bus.$emit("editDialog",row)
+		editDialog (row) {
+			this.$bus.$emit("editDialog", row)
 		},
 
 		//点击左右分页按钮，取得当前的页码，重新请求列表

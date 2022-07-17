@@ -28,13 +28,15 @@ export default {
 			menuList:[],
 			dialogVisible: false,
 			curRoleId:"",
-			curRoleName:""
+			curRoleName:"",
+			actionMap:{}
 		}
 	},
 	methods:{
 		async getMenu(){
 			let res=await this.$api.getMenu()
 			this.menuList=res
+			this.getActionMap(res)
 		},
 
 		//dialog弹窗关闭触发的事件函数
@@ -52,10 +54,52 @@ export default {
 			this.$nextTick(()=>{
 				this.$refs.tree.setCheckedKeys(permissionList.checkedKeys)
 			})
+
+			// setTimeout(()=>{
+			// 	this.$refs.tree.setCheckedKeys(permissionList.checkedKeys)
+			// },200)
 		},
-		submitDialog(){
-			console.log(this.$refs.tree.getCheckedKeys());
-			console.log(this.$refs.tree.getCheckedNodes());
+		async submitDialog(){
+			let nodes=this.$refs.tree.getCheckedNodes()
+			let halfKeys=this.$refs.tree.getHalfCheckedKeys()
+
+			let checkedKeys=[]
+			let parentKeys=[]
+			nodes.map(node=>{
+				if(node.menuType == 2){
+					checkedKeys.push(node._id)
+				}else{
+					parentKeys.push(node._id)
+				}
+			})
+
+			let params={
+				_id:this.curRoleId,
+				checkedKeys,
+				halfCheckedKeys:parentKeys.concat(halfKeys)
+			}
+			await this.$api.putPermission(params)
+			this.$message.success("权限更新成功")
+			this.closeDialog()
+		},
+
+		getActionMap(list){
+			let actionMap={}
+			function deep(arr){
+				while(arr.length){
+					console.log(arr.length);
+					let item=arr.pop()
+					if(item.children && item.action){
+						actionMap[item._id]=item.menuName
+					}
+					if(item.children && !item.action){
+						deep(item.children)
+					}
+				}
+			}
+
+			deep(JSON.parse(JSON.stringify(list)))
+			this.actionMap=actionMap
 		}
 	},
 	created(){

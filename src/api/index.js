@@ -95,6 +95,15 @@ function putRole (params = []) {
 		{ mock: false })
 }
 
+//更新权限
+function putPermission(params=[]){
+	return request.put(
+		"/role/permission",
+		params,
+		{mock:true}
+	)
+}
+
 export default {
 	usersLogin,
 	getUndone,
@@ -111,5 +120,6 @@ export default {
 	getRole,
 	postRole,
 	deleteRole,
-	putRole
+	putRole,
+	putPermission
 }
