@@ -3,7 +3,7 @@ import axios from "axios"
 import storage from "@/utils/storage"
 import { Message } from "element-ui"
 
-import vueRouter from "vue-router"
+import vueRouter from "@/router"
 
 // const CODE = {
 // 	SUCCESS: 200,  //成功
@@ -51,7 +51,7 @@ instance.interceptors.response.use(
 	//响应成功的数据
 	response => {
 		let { code, msg, data } = response.data
-		console.log(`${response.config.url} ==>` ,data)
+		console.log(`${response.config.url} ==>` ,code)
 		
 		//判断当状态为200时表示响应成功
 		if (code === CODE.SUCCESS) {
@@ -59,28 +59,31 @@ instance.interceptors.response.use(
 		} else {
 			//参数错误
 			if (code === CODE.PARAM_ERROR) {
-				Message.error("参数错误")
+				Message.error(msg || "参数错误")
 
 				//账号密码错误
 			} else if (code === CODE.USER_ACCOUNT_ERROR) {
-				Message.error("账号或密码错误，请重新输入")
+				Message.error(msg || "账号或密码错误，请重新输入")
 
 				//用户未登入
 			} else if (code === CODE.USER_LOGIN_ERROR) {
-				Message.error("您还未登入，请登入后查看")
+				Message.error(msg || "您还未登入，请登入后查看")
 				vueRouter.replace("/user/login")
 
 				//业务请求失败
 			} else if (code === CODE.BUSINESS_ERROR) {
-				Message.error("业务请求失败")
+				Message.error(msg || "业务请求失败")
 
 				//TOKEN认证失败或过期,请重新登入
 			} else if (code === CODE.AUTH_ERROR) {
-				Message.error("TOKEN认证失败或过期,请重新登入")
+				Message.error(msg || "TOKEN认证失败或过期,请重新登入")
+				console.dir(vueRouter);
+				storage.removeKey("TOKEN")
+				vueRouter.replace("/user/login")
 
 				//网络请求异常，请稍后重试
 			} else if (code === CODE.NETWORK_ERROR) {
-				Message.error("网络请求异常，请稍后重试")
+				Message.error(msg || "网络请求异常，请稍后重试")
 			}
 
 			//返回错误信息

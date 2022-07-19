@@ -19,7 +19,7 @@
 				</template>
 			</el-table-column>
 		</el-table>
-		<el-pagination background layout="prev, pager, next" :total="page.total" @current-change="handelCurrentChange">
+		<el-pagination background layout="prev, pager, next" :total="page.total" @current-change="handleCurrentChange">
 		</el-pagination>
 	</div>
 </template>
@@ -45,13 +45,13 @@ export default {
 					label: "权限列表",
 					prop: "permissionList",
 					formatter (row, column, value) {
-						let names=[]
-						let arr={
-							"600d525e602f452aaeeffcd9":"用户管理"
+						let names = []
+						let arr = {
+							"600d525e602f452aaeeffcd9": "用户管理"
 						}
-						let list=value.halfCheckedKeys || []
-						list.map(key=>{
-							if(key){
+						let list = value.halfCheckedKeys || []
+						list.map(key => {
+							if (key) {
 								names.push(arr[key])
 							}
 						})
@@ -101,7 +101,7 @@ export default {
 		},
 
 		//点击左右分页按钮，取得当前的页码，重新请求列表
-		handelCurrentChange (val) {
+		handleCurrentChange (val) {
 			this.pager.pageNum = val
 			this.$bus.$emit("onSubmit")
 		},

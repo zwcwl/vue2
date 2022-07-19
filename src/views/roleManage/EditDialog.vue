@@ -87,7 +87,6 @@ export default {
 			let actionMap={}
 			function deep(arr){
 				while(arr.length){
-					console.log(arr.length);
 					let item=arr.pop()
 					if(item.children && item.action){
 						actionMap[item._id]=item.menuName

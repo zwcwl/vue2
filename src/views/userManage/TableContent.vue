@@ -15,13 +15,13 @@
 
 			<el-table-column label="操作" width="143px">
 				<template slot-scope="scope">
-					<el-button size="mini" @click="userDialogShow('update',scope.row)">编辑</el-button>
+					<el-button size="mini" @click="userDialogShow('update', scope.row)">编辑</el-button>
 					<el-button size="mini" type="danger" @click="handleDel(scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
 
-		<el-pagination background layout="prev, pager, next" :total="page.total" @current-change="handelCurrentChange">
+		<el-pagination background layout="prev, pager, next" :total="page.total" @current-change="handleCurrentChange">
 		</el-pagination>
 	</div>
 </template>
@@ -92,7 +92,7 @@ export default {
 				total: 1
 			},
 			checkedUserIds: [],
-			actions:""
+			actions: ""
 		}
 	},
 	methods: {
@@ -143,14 +143,14 @@ export default {
 		},
 
 		//点击左右分页按钮，取得当前的页码，重新请求列表
-		handelCurrentChange (val) {
+		handleCurrentChange (val) {
 			this.pager.pageNum = val
 			this.$bus.$emit("onSubmit")
 		},
 
 		//点击显示添加表单
-		userDialogShow (dialogType,row) {
-			this.$bus.$emit("userDialogShow",dialogType,row)
+		userDialogShow (dialogType, row) {
+			this.$bus.$emit("userDialogShow", dialogType, row)
 		}
 	},
 	created () {

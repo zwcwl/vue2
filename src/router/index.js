@@ -12,7 +12,7 @@ let routes = [
 		path: "/",
 		meta: {
 			name: "首页",
-			title:"vue2"
+			title: "vue2"
 		},
 		component: () => import("@/views/HomeView"),
 		children: [
@@ -23,7 +23,7 @@ let routes = [
 				meta: {
 					requestAuth: true,
 					name: "欢迎",
-					title:"vue2"
+					title: "vue2"
 				},
 				component: () => import("@/views/hello/HelloView")
 			},
@@ -62,26 +62,37 @@ let routes = [
 				component: () => import("@/views/roleManage/RoleManage")
 			},
 
-			//登入页面
+			//部门管理页面
 			{
-				path: "/user/login",
-				name: "LoginView",
+				path: "system/dept",
+				name: "DeptManage",
 				meta: {
-					name: "登入",
+					requestAuth: true,
+					name: "角色管理"
 				},
-				component: () => import("@/views/login/LoginView")
-			},
-
-			//未匹配的路由显示的页面
-			{
-				path: "*",
-				name: "NotView",
-				meta: {
-					name: "首页",
-				},
-				component: () => import("@/views/404/NotView")
+				component: () => import("@/views/deptManage/DeptManage")
 			}
 		]
+	},
+
+	//登入页面
+	{
+		path: "/user/login",
+		name: "LoginView",
+		meta: {
+			name: "登入",
+		},
+		component: () => import("@/views/login/LoginView")
+	},
+
+	//未匹配的路由显示的页面
+	{
+		path: "*",
+		name: "NotView",
+		meta: {
+			name: "首页",
+		},
+		component: () => import("@/views/404/NotView")
 	}
 ]
 
