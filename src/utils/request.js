@@ -51,7 +51,7 @@ instance.interceptors.response.use(
 	//响应成功的数据
 	response => {
 		let { code, msg, data } = response.data
-		console.log(`${response.config.url} ==>` ,code)
+		console.log(`${response.config.url} ==>` ,code ,data)
 		
 		//判断当状态为200时表示响应成功
 		if (code === CODE.SUCCESS) {

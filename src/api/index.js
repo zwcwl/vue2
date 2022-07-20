@@ -104,6 +104,38 @@ function putPermission(params=[]){
 	)
 }
 
+function getUserAll(params=[]){
+	return request.get(
+		"/user/all",
+		params,
+		{mock:true}
+	)
+}
+
+function postDept(params=[]){
+	return request.post(
+		"/dept",
+		params,
+		{mock:true}
+	)
+}
+
+function putDept(params=[]){
+	return request.put(
+		"/dept",
+		params,
+		{mock:true}
+	)
+}
+
+function delDept(params=[]){
+	return request.delete(
+		"/dept",
+		params,
+		{mock:true}
+	)
+}
+
 export default {
 	usersLogin,
 	getUndone,
@@ -121,5 +153,9 @@ export default {
 	postRole,
 	deleteRole,
 	putRole,
-	putPermission
+	putPermission,
+	getUserAll,
+	postDept,
+	delDept,
+	putDept
 }

@@ -3,6 +3,7 @@
 		<div class="manage-container">
 			<query-form></query-form>
 			<table-content></table-content>
+			<dialog-form></dialog-form>
 		</div>
 	</div>
 </template>
@@ -10,11 +11,13 @@
 <script>
 import QueryForm from './QueryForm'
 import TableContent from './TableContent'
+import DialogForm from './DialogForm.vue'
 export default {
 	name:'DeptManage',
 	components:{
 		QueryForm,
-		TableContent
+		TableContent,
+		DialogForm
 	}
 }
 </script>

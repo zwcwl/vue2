@@ -1,40 +1,25 @@
 <template>
 	<div id="dialog-form">
 		<el-dialog title="添加部门" :visible="dialogVisible" @close="closeDialog" :close-on-click-modal="false">
-			<el-form :model="deptDialogform" :rules="rules" status-icon ref="userDialogform" label-width="100px">
+			<el-form :model="deptDialogform" :rules="rules" status-icon ref="deptDialogform" label-width="100px">
+				<el-form-item label="上级部门" prop="parentId">
+					<el-cascader placeholder="请选择上级部门" clearable v-model="deptDialogform.parentId"
+						:props="{ checkStrictly: true, value: '_id', label: 'deptName' }" :options="deptList" :show-all-levels="true">
+					</el-cascader>
+				</el-form-item>
 				<el-form-item label="部门名称" prop="deptName">
 					<el-input v-model="deptDialogform.deptName" autocomplete="off" placeholder="请输入部门名称">
 					</el-input>
 				</el-form-item>
-				<el-form-item label="邮箱" prop="userEmail">
-					<el-input v-model="userDialogform.userEmail" autocomplete="off" placeholder="请输入用户邮箱">
-						<template #append>@163.com</template>
+				<el-form-item label="负责人" prop="userName">
+					<el-select placeholder="请选择部门负责人" v-model="deptDialogform.userName" @change="handelUser">
+						<el-option v-for="item in userList" :key="item.userId" :label="item.userName"
+							:value="`${item.userId}/${item.userName}/${item.userEmail}`"></el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="负责人邮箱" prop="userEmail">
+					<el-input v-model="deptDialogform.userEmail" disabled autocomplete="off" placeholder="负责人邮箱会根据负责人自动填写">
 					</el-input>
-				</el-form-item>
-				<el-form-item label="手机号" prop="mobile">
-					<el-input v-model="userDialogform.mobile" autocomplete="off" placeholder="请输入手机号"></el-input>
-				</el-form-item>
-				<el-form-item label="岗位" prop="job">
-					<el-input v-model="userDialogform.job" autocomplete="off" placeholder="请选择岗位"></el-input>
-				</el-form-item>
-				<el-form-item label="用户状态" prop="userState">
-					<el-select v-model="userDialogform.userState" placeholder="请选择用户状态" style="width: 100%">
-						<el-option :value="1" label="在职"></el-option>
-						<el-option :value="2" label="离职"></el-option>
-						<el-option :value="3" label="试用期"></el-option>
-					</el-select>
-				</el-form-item>
-				<el-form-item label="系统角色" prop="systemRole">
-					<el-select v-model="userDialogform.systemRole" placeholder="请选择系统角色" multiple style="width: 100%">
-						<el-option v-for="role in roleList" :key="role._id" :label="role.roleName" :value="role._id">
-						</el-option>
-					</el-select>
-				</el-form-item>
-				<el-form-item label="部门" prop="deptList">
-					<el-cascader v-model="userDialogform.deptList" :options="deptList" placeholder="请选择所属部门"
-						:props="{ multiple: true, checkStrictly: true, value: '_id', label: 'deptName' }" clearable
-						style="width: 100%">
-					</el-cascader>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -51,15 +36,69 @@ export default {
 	data () {
 		return {
 			dialogVisible: false,
-			deptDialogform:{
-
-			}
+			deptDialogform: {
+				deptName: '',
+				preatedId: [null]
+			},
+			userList: [],
+			state: "",
+			rules: {
+				preatedId: {
+					required: true, message: '请输入上级部门', trigger: 'blur'
+				},
+				deptName: {
+					required: true, message: '请输入菜单名称', trigger: 'blur'
+				},
+				userName: {
+					required: true, message: '请输入负责人', trigger: 'blur'
+				}
+			},
+			deptList: []
 		}
 	},
-	methods:{
-		closeDialog(){
-			this.dialogVisible=false
+	methods: {
+		closeDialog () {
+			this.dialogVisible = false
+			this.$refs.deptDialogform.resetFields()
+		},
+		openDialog (state, row) {
+			this.state = state
+			this.dialogVisible = true
+			if (state == "update") {
+				this.$nextTick(() => {
+					Object.assign(this.deptDialogform, row)
+				})
+			}
+		},
+
+		async submitDialog () {
+			if(state == "update"){
+				await this.$api.putDept(this.deptDialogform)
+			}else{
+				await this.$api.postDept(this.deptDialogform)
+			}
+		},
+
+		async getDept(){
+			let res= await this.$api.getDept()
+			this.deptList=res
+		},
+
+		async getUserAll(){
+			let res= await this.$api.getUserAll()
+			this.userList=res
+		},
+
+		handelUser(val){
+			console.log(this.deptDialogform.userName.split("/"));
+			let [userId,userName,userEmail]=this.deptDialogform.userName.split("/")
+			Object.assign(this.deptDialogform,{userId,userName,userEmail})
 		}
+	},
+	mounted () {
+		this.$bus.$on("openDialog", this.openDialog)
+		this.getDept()
+		this.getUserAll()
 	}
 }
 </script>
