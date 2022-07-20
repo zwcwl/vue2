@@ -11,21 +11,21 @@ let routes = [
 	{
 		path: "/",
 		meta: {
-			name: "首页",
+			pathName: "首页",
 			title: "vue2"
 		},
-		component: () => import("@/views/HomeView"),
+		component: () => import("@/views/home/Home"),
 		children: [
 			//欢迎页面
 			{
 				path: "",
-				name: "HelloView",
+				name: "Welcome",
 				meta: {
 					requestAuth: true,
-					name: "欢迎",
+					pathName: "欢迎",
 					title: "vue2"
 				},
-				component: () => import("@/views/hello/HelloView")
+				component: () => import("@/views/main/welcome/Welcome")
 			},
 
 			//系统管理
@@ -35,9 +35,9 @@ let routes = [
 				name: "ManageView",
 				meta: {
 					requestAuth: true,
-					name: "用户管理"
+					pathName: "用户管理"
 				},
-				component: () => import("@/views/userManage/UserManage")
+				component: () => import("@/views/main/user/User")
 			},
 
 			//菜单管理页面
@@ -46,9 +46,9 @@ let routes = [
 				name: "MenuManage",
 				meta: {
 					requestAuth: true,
-					name: "菜单管理"
+					pathName: "菜单管理"
 				},
-				component: () => import("@/views/menuManage/MenuManage")
+				component: () => import("@/views/main/menu/Menu")
 			},
 
 			//角色管理页面
@@ -57,9 +57,9 @@ let routes = [
 				name: "RoleManage",
 				meta: {
 					requestAuth: true,
-					name: "角色管理"
+					pathName: "角色管理"
 				},
-				component: () => import("@/views/roleManage/RoleManage")
+				component: () => import("@/views/main/role/Role")
 			},
 
 			//部门管理页面
@@ -68,9 +68,9 @@ let routes = [
 				name: "DeptManage",
 				meta: {
 					requestAuth: true,
-					name: "角色管理"
+					pathName: "角色管理"
 				},
-				component: () => import("@/views/deptManage/DeptManage")
+				component: () => import("@/views/main/dept/Dept")
 			}
 		]
 	},
@@ -80,9 +80,9 @@ let routes = [
 		path: "/user/login",
 		name: "LoginView",
 		meta: {
-			name: "登入",
+			pathName: "登入",
 		},
-		component: () => import("@/views/login/LoginView")
+		component: () => import("@/views/main/login/Login")
 	},
 
 	//未匹配的路由显示的页面
@@ -90,7 +90,7 @@ let routes = [
 		path: "*",
 		name: "NotView",
 		meta: {
-			name: "首页",
+			pathName: "首页",
 		},
 		component: () => import("@/views/404/NotView")
 	}

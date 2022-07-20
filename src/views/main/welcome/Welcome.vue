@@ -24,7 +24,7 @@ export default {
 #hello-view {
 	position: relative;
 	height: 100%;
-	background-image: url("../../assets/images/yuner.webp");
+	background-image: url("../../../assets/images/yuner.webp");
 	background-position: center 0;
 	background-size: cover;
 	background-repeat: no-repeat;
