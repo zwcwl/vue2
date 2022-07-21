@@ -1,4 +1,6 @@
-module.exports = {
+import request from "@/utils/request"
+
+export default {
     //获取角色，用来显示角色列表
     getRole(params = []) {
         return request.get(

@@ -30,7 +30,6 @@ export default {
 		},
 		getBreadcrumb() {
 			let matched = this.$route.matched; //拿到显示的路由路径
-			console.log(matched);
 			if (this.isHome(matched[0])) {//当前路由等于首页
 				matched[0].path = "/"
 			}

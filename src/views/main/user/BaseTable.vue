@@ -1,7 +1,7 @@
 <template>
 	<div id="table-content">
 		<div class="action">
-			<el-button type="primary" @click="userDialogShow('create')">添加</el-button>
+			<el-button type="primary" @click="userOpenDialog('create')">添加</el-button>
 			<el-button type="danger" @click="handlePatchDel">批量删除</el-button>
 		</div>
 
@@ -15,7 +15,7 @@
 
 			<el-table-column label="操作" width="143px">
 				<template slot-scope="scope">
-					<el-button size="mini" @click="userDialogShow('update', scope.row)">编辑</el-button>
+					<el-button size="mini" @click="userOpenDialog('update', scope.row)">编辑</el-button>
 					<el-button size="mini" type="danger" @click="handleDel(scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
@@ -29,6 +29,7 @@
 <script>
 import dateFormat from "@/utils/dateFormat"
 export default {
+	name:"BaseTable",
 	data () {
 		return {
 			userList: [],
@@ -131,7 +132,7 @@ export default {
 		},
 
 		//获取用户列表函数
-		async getUser (queryForm = []) {
+		async getUser (queryForm) {
 			let params = { ...this.page, ...queryForm }
 			try {
 				let { list, page } = await this.$api.getUser(params)
@@ -145,12 +146,12 @@ export default {
 		//点击左右分页按钮，取得当前的页码，重新请求列表
 		handleCurrentChange (val) {
 			this.pager.pageNum = val
-			this.$bus.$emit("onSubmit")
+			this.$bus.$emit("querySubmit")
 		},
 
 		//点击显示添加表单
-		userDialogShow (dialogType, row) {
-			this.$bus.$emit("userDialogShow", dialogType, row)
+		userOpenDialog (dialogType, row) {
+			this.$bus.$emit("userOpenDialog", dialogType, row)
 		}
 	},
 	created () {

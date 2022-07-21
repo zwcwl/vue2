@@ -1,6 +1,8 @@
-module.exports = {
+import request from "@/utils/request"
+
+export default {
     //登入
-    usersLogin(params = {}) {
+    userLogin(params = {}) {
         return request.post("/users/login", params)
     },
 

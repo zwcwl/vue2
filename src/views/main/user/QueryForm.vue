@@ -16,8 +16,8 @@
 				</el-select>
 			</el-form-item>
 			<el-form-item>
-				<el-button type="primary" @click="onSubmit">查询</el-button>
-				<el-button type="primary" @click="onReset('queryForm')">重置</el-button>
+				<el-button type="primary" @click="querySubmit">查询</el-button>
+				<el-button type="primary" @click="queryReset('queryForm')">重置</el-button>
 			</el-form-item>
 		</el-form>
 	</div>
@@ -37,18 +37,18 @@ export default {
 	},
 	methods: {
 		//点击搜索用户
-		onSubmit () {
+		querySubmit () {
 			this.$bus.$emit("getUser", this.queryForm)
 		},
 
 		//点击重置表单
-		onReset (formName) {
+		queryReset (formName) {
 			this.$refs[formName].resetFields();
 		},
 	},
 	mounted () {
 		this.$bus.$emit("getUser", this.queryForm)
-		this.$bus.$on("onSubmit", this.onSubmit)
+		this.$bus.$on("querySubmit", this.querySubmit)
 	}
 }
 </script>

@@ -1,4 +1,6 @@
-module.exports = {
+import request from "@/utils/request"
+
+export default {
     //获取部门
     getDept(params = {}) {
         return request.get("/dept", params, { mock: true })

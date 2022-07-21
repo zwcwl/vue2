@@ -6,7 +6,8 @@
 
 				<el-form-item label="父级菜单" prop="parentId">
 					<el-cascader v-model="menuDialogForm.parentId" :options="menuList" placeholder="请选择父级菜单"
-						:props="{ checkStrictly: true, label: 'menuName', value: '_id' }" clearable style="width: 280px" :disabled="dialogType=='update'">
+						:props="{ checkStrictly: true, label: 'menuName', value: '_id' }" clearable style="width: 280px"
+						:disabled="dialogType == 'update'">
 					</el-cascader>
 					<span style="margin-left:26px">当未选择时，将直接创建一级菜单</span>
 				</el-form-item>
@@ -57,7 +58,6 @@
 <script>
 export default {
 	name: "DialogForm",
-	props: ["menuList", "updateMenu"],
 	data () {
 		return {
 			dialogVisible: false,
@@ -69,38 +69,29 @@ export default {
 				menuName: "",
 				path: "",
 				component: "",
-				icon:""
+				icon: ""
 			},
 			rules: {
 				menuName: {
 					required: true, message: '请输入菜单名称', trigger: 'blur'
 				}
-			}
+			},
+			menuList:[]
 		}
 	},
 	methods: {
 		//判断对话框的类型：编辑、局部新增、全局新增
-		menuDialogShow (dialogType,row) {
+		menuOpenDialog (dialogType, row) {
 			this.dialogVisible = true
 			this.dialogType = dialogType
-			if (dialogType == "localityCreate") {
-				this.localityAddMenu(row)
+			if (dialogType == "create") {
+				this.menuDialogForm.parentId = [...row.parentId, row._id].filter((item) => item)
 			} else if (dialogType == "update") {
-				this.editMenuDialog(row)
+				this.$nextTick(() => {
+					delete row.children
+					Object.assign(this.menuDialogForm, row)
+				})
 			}
-		},
-
-		//局部新增对话框
-		localityAddMenu (row) {
-			this.menuDialogForm.parentId = [...row.parentId, row._id].filter((item) => item)
-		},
-
-		//编辑对话框
-		editMenuDialog (row) {
-			this.$nextTick(() => {
-				delete row.children
-				Object.assign(this.menuDialogForm,row)
-			})
 		},
 
 		//dialog弹窗关闭触发的事件函数
@@ -114,25 +105,21 @@ export default {
 			let { dialogType, menuDialogForm } = this
 			this.$refs.menuDialogForm.validate(async (valid) => {
 				if (!valid) return
-				try {
-					if (dialogType == "localityCreate" || dialogType == "globalCreate") {
-						await this.$api.postMenu(menuDialogForm)
-						this.$message.success("菜单新增成功")
-					} else {
-						console.log(menuDialogForm);
-						await this.$api.putMenu(menuDialogForm)
-						this.$message.success("菜单更新成功")
-					}
-					this.closeDialog()
-					// this.$bus.$emit("onSubmit")
-				} catch (error) {
-					this.$message.success("操作失败");
+				if (dialogType == "create") {
+					await this.$api.postMenu(menuDialogForm)
+					this.$message.success("菜单新增成功")
+				} else {
+					await this.$api.putMenu(menuDialogForm)
+					this.$message.success("菜单更新成功")
 				}
+				this.closeDialog()
+				this.$bus.$emit("querySubmit")
 			})
 		}
 	},
 	created () {
-		this.$bus.$on("menuDialogShow", this.menuDialogShow)
+		this.$bus.$on("menuOpenDialog", this.menuOpenDialog)
+		this.menuList=this.$bus.menuList
 	}
 }
 </script>

@@ -1,4 +1,6 @@
-module.exports = {
+import request from "@/utils/request"
+
+export default {
     //获取菜单项
     getMenu(params = {}) {
         return request.get("/menu", params, { mock: false })

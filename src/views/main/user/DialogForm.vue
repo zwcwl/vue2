@@ -110,13 +110,16 @@ export default {
 		},
 
 		//打开dialog弹窗表单
-		userDialogShow (dialogType,row) {
+		userOpenDialog (dialogType, row) {
 			this.dialogType = dialogType
-			if (dialogType === "update") {
-				this.editDialog(row)
-				return
-			}
 			this.dialogVisible = true
+			
+			if (dialogType === "update") {
+				this.$nextTick(() => {
+					Object.assign(this.userDialogform, row)
+					this.userDialogform.userEmail = this.userDialogform.userEmail.split("@")[0]
+				})
+			}
 		},
 
 		//dialog弹窗关闭触发的事件函数
@@ -139,7 +142,7 @@ export default {
 							await this.$api.postUser(data)
 							this.$message.success("用户添加成功")
 						}
-						this.dialogClose()
+						this.closeDialog()
 						this.$bus.$emit("onSubmit")
 					}
 				})
@@ -147,18 +150,9 @@ export default {
 				console.log(error);
 			}
 		},
-
-		//点击编辑按钮打开userDialogform
-		editDialog (row) {
-			this.dialogVisible = true
-			this.$nextTick(() => {
-				Object.assign(this.userDialogform, row)
-				this.userDialogform.userEmail = this.userDialogform.userEmail.split("@")[0]
-			})
-		},
 	},
 	created () {
-		this.$bus.$on("userDialogShow", this.userDialogShow)
+		this.$bus.$on("userOpenDialog", this.userOpenDialog)
 		this.getRoleGain()
 		this.getDept()
 	},

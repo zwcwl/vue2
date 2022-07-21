@@ -1,9 +1,9 @@
 <template>
 	<div id="user-manage">
-		<div class="manage-container">
+		<div class="container">
 			<query-form></query-form>
 
-			<table-content></table-content>
+			<base-table></base-table>
 
 			<dialog-form></dialog-form>
 		</div>
@@ -12,13 +12,13 @@
 
 <script>
 import QueryForm from './QueryForm.vue'
-import TableContent from './TableContent.vue'
+import BaseTable from './BaseTable.vue'
 import DialogForm from './DialogForm.vue'
 export default {
-	name: "ManageView",
+	name: "User",
 	components: {
 		QueryForm,
-		TableContent,
+		BaseTable,
 		DialogForm
 	}
 }
@@ -30,7 +30,7 @@ export default {
 	height: 100%;
 	box-sizing: border-box;
 
-	.manage-container {
+	.container {
 		height: 100%;
 		box-sizing: border-box;
 	}
