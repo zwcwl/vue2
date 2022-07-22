@@ -2,7 +2,7 @@
 	<div id="base-table">
 		<el-card class="box-card" shadow="never">
 			<div slot="header" class="clearfix">
-				<el-button type="primary" @click="handleCreate('create')">添加</el-button>
+				<el-button type="primary" @click="deptOpenDialog('create')">添加</el-button>
 			</div>
 			<div class="table">
 				<el-table ref="multipleTable" :data="deptList" tooltip-effect="dark" row-key="_id"
@@ -13,7 +13,7 @@
 
 					<el-table-column label="操作" width="143px">
 						<template slot-scope="scope">
-							<el-button size="mini" @click="handleCreate('update', scope.row)">编辑</el-button>
+							<el-button size="mini" @click="deptOpenDialog('update', scope.row)">编辑</el-button>
 							<el-button size="mini" type="danger" @click="handleDel(scope.row._id)">删除</el-button>
 						</template>
 					</el-table-column>
@@ -56,8 +56,8 @@ export default {
 		}
 	},
 	methods:{
-		handleCreate(state,row){
-			this.$bus.$emit("openDialog",state,row)
+		deptOpenDialog(dialogType,row){
+			this.$bus.$emit("deptOpenDialog",dialogType,row)
 		},
 		async getDept(queryForm = {}){
 			let params={...queryForm}

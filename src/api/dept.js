@@ -11,7 +11,7 @@ export default {
         return request.post(
             "/dept",
             params,
-            { mock: true }
+            { mock: false }
         )
     },
 

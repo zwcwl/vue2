@@ -41,7 +41,7 @@ export default {
 				preatedId: [null]
 			},
 			userList: [],
-			state: "",
+			dialogType: "",
 			rules: {
 				preatedId: {
 					required: true, message: '请输入上级部门', trigger: 'blur'
@@ -61,10 +61,10 @@ export default {
 			this.dialogVisible = false
 			this.$refs.deptDialogform.resetFields()
 		},
-		openDialog (state, row) {
-			this.state = state
+		deptOpenDialog (dialogType, row) {
+			this.dialogType = dialogType
 			this.dialogVisible = true
-			if (state == "update") {
+			if (dialogType == "update") {
 				this.$nextTick(() => {
 					Object.assign(this.deptDialogform, row)
 				})
@@ -72,11 +72,12 @@ export default {
 		},
 
 		async submitDialog () {
-			if(state == "update"){
+			if(this.dialogType == "update"){
 				await this.$api.putDept(this.deptDialogform)
 			}else{
 				await this.$api.postDept(this.deptDialogform)
 			}
+			this.closeDialog()
 		},
 
 		async getDept(){
@@ -96,7 +97,7 @@ export default {
 		}
 	},
 	mounted () {
-		this.$bus.$on("openDialog", this.openDialog)
+		this.$bus.$on("deptOpenDialog", this.deptOpenDialog)
 		this.getDept()
 		this.getUserAll()
 	}
