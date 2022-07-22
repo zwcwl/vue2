@@ -26,7 +26,7 @@ export default {
         return request.delete("/users", params)
     },
 
-    etUserAll(params = []) {
+    getUserAll(params = []) {
         return request.get(
             "/user/all",
             params,

@@ -1,14 +1,14 @@
 <template>
-	<div class="edit-dialog">
-		<el-dialog title="权限设置" :visible="dialogVisible" @close="closeDialog" :close-on-click-modal="false">
-			<el-form label-width="100px">
-				<el-form-item label="角色名称">
-					{{ curRoleName }}
+	<div id="dialog-form">
+		<el-dialog :title="dialogType == 'update' ? '更新菜单' : '新增菜单'" :visible="dialogVisible" @close="closeDialog"
+			:close-on-click-modal="false">
+			<el-form ref="roleDialogForm" :model="roleDialogForm" status-icon :rules="rules" label-width="100px">
+				<el-form-item label="角色名称" prop="roleName">
+					<el-input v-model="roleDialogForm.roleName" placeholder="请输入角色名称"></el-input>
 				</el-form-item>
-				<el-form-item label="权限设置">
-					<el-tree :data="menuList" show-checkbox node-key="_id" default-expand-all ref="tree"
-						:props="{label:'menuName'}">
-					</el-tree>
+
+				<el-form-item label="备注" prop="remark">
+					<el-input type="textarea" v-model="roleDialogForm.remark" placeholder="请输入备注"></el-input>
 				</el-form-item>
 			</el-form>
 
@@ -23,87 +23,60 @@
 <script>
 export default {
 	name: "EditDialog",
-	data(){
+	data () {
 		return {
-			menuList:[],
 			dialogVisible: false,
-			curRoleId:"",
-			curRoleName:"",
-			actionMap:{}
+			dialogType: "",
+			roleDialogForm: {
+				roleName:"",
+				remark:""
+			},
+			rules: {
+				roleName: {
+					required: true, message: '请输入角色名称', trigger: 'blur'
+				}
+			}
 		}
 	},
-	methods:{
-		async getMenu(){
-			let res=await this.$api.getMenu()
-			this.menuList=res
-			this.getActionMap(res)
+	methods: {
+		//判断对话框的类型：编辑、新增
+		roleOpenDialog (dialogType,row) {
+			this.dialogVisible = true
+			this.dialogType = dialogType
+			if (dialogType == "update") {
+				Object.assign(this.roleDialogForm,row)
+			}
 		},
 
 		//dialog弹窗关闭触发的事件函数
 		closeDialog () {
 			this.dialogVisible = false
+			this.$refs.roleDialogForm.resetFields();
 		},
 
-		editDialog(row){
-			console.log(row);
-			let {_id,roleName,permissionList} = row
-			this.dialogVisible=true
-			this.curRoleName=roleName
-			this.curRoleId=_id
-
-			this.$nextTick(()=>{
-				this.$refs.tree.setCheckedKeys(permissionList.checkedKeys)
-			})
-
-			// setTimeout(()=>{
-			// 	this.$refs.tree.setCheckedKeys(permissionList.checkedKeys)
-			// },200)
-		},
-		async submitDialog(){
-			let nodes=this.$refs.tree.getCheckedNodes()
-			let halfKeys=this.$refs.tree.getHalfCheckedKeys()
-
-			let checkedKeys=[]
-			let parentKeys=[]
-			nodes.map(node=>{
-				if(node.menuType == 2){
-					checkedKeys.push(node._id)
-				}else{
-					parentKeys.push(node._id)
+		//提交对话框
+		submitDialog () {
+			let { dialogType, roleDialogForm } = this
+			this.$refs.roleDialogForm.validate(async (valid) => {
+				if (!valid) return
+				try {
+					if (dialogType == "create") {
+						await this.$api.postRole(roleDialogForm)
+						this.$message.success("菜单新增成功")
+					} else {
+						await this.$api.putRole(roleDialogForm)
+						this.$message.success("菜单更新成功")
+					}
+					this.closeDialog()
+					this.$bus.$emit("querySubmit")
+				} catch (error) {
+					this.$message.success("操作失败");
 				}
 			})
-
-			let params={
-				_id:this.curRoleId,
-				checkedKeys,
-				halfCheckedKeys:parentKeys.concat(halfKeys)
-			}
-			await this.$api.putPermission(params)
-			this.$message.success("权限更新成功")
-			this.closeDialog()
-		},
-
-		getActionMap(list){
-			let actionMap={}
-			function deep(arr){
-				while(arr.length){
-					let item=arr.pop()
-					if(item.children && item.action){
-						actionMap[item._id]=item.menuName
-					}
-					if(item.children && !item.action){
-						deep(item.children)
-					}
-				}
-			}
-
-			deep(JSON.parse(JSON.stringify(list)))
-			this.actionMap=actionMap
 		}
 	},
-	created(){
-		this.getMenu(),
-		this.$bus.$on("editDialog",this.editDialog)
+	created () {
+		this.$bus.$on("roleOpenDialog", this.roleOpenDialog)
 	}
 }
 </script>

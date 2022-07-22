@@ -6,20 +6,16 @@ import storage from "@/utils/storage"
 Vue.use(Vuex)
 
 let state={
-	isSpread:false,
-	userinfo:[]
+	userInfo:[]
 }
 
 let mutations={
-	cutSpread(state){
-		state.isSpread=!state.isSpread
-	},
 	addUserInfo(state,val){
-		state.userinfo=val
+		state.userInfo=val
 		storage.replaceItem("TOKEN",val)
 	},
 	delUserInfo(state){
-		state.userinfo=[]
+		state.userInfo=[]
 		storage.removeKey("TOKEN")
 	}
 }

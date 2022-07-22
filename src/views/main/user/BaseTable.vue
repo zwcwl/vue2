@@ -1,35 +1,38 @@
 <template>
-	<div id="table-content">
-		<div class="action">
-			<el-button type="primary" @click="userOpenDialog('create')">添加</el-button>
-			<el-button type="danger" @click="handlePatchDel">批量删除</el-button>
-		</div>
+	<div id="base-table">
+		<el-card class="box-card" shadow="never">
+			<div slot="header" class="clearfix">
+				<el-button type="primary" @click="userOpenDialog('create')">添加</el-button>
+				<el-button type="danger" @click="handlePatchDel">批量删除</el-button>
+			</div>
+			<div class="table">
+				<el-table @selection-change="handleSelectionChange" ref="multipleTable" :data="userList" tooltip-effect="dark"
+					style="width: 100%" stripe border>
+					<el-table-column type="selection" width="46"></el-table-column>
 
-		<el-table @selection-change="handleSelectionChange" ref="multipleTable" :data="userList" tooltip-effect="dark"
-			style="width: 100%" stripe border>
-			<el-table-column type="selection" width="46"></el-table-column>
+					<el-table-column v-for="item in columns" :key="item.prop" :label="item.label" :prop="item.prop"
+						:formatter="item.formatter" :width="item.width">
+					</el-table-column>
 
-			<el-table-column v-for="item in columns" :key="item.prop" :label="item.label" :prop="item.prop"
-				:formatter="item.formatter" :width="item.width">
-			</el-table-column>
+					<el-table-column label="操作" width="143px">
+						<template slot-scope="scope">
+							<el-button size="mini" @click="userOpenDialog('update', scope.row)">编辑</el-button>
+							<el-button size="mini" type="danger" @click="handleDel(scope.row)">删除</el-button>
+						</template>
+					</el-table-column>
+				</el-table>
 
-			<el-table-column label="操作" width="143px">
-				<template slot-scope="scope">
-					<el-button size="mini" @click="userOpenDialog('update', scope.row)">编辑</el-button>
-					<el-button size="mini" type="danger" @click="handleDel(scope.row)">删除</el-button>
-				</template>
-			</el-table-column>
-		</el-table>
-
-		<el-pagination background layout="prev, pager, next" :total="page.total" @current-change="handleCurrentChange">
-		</el-pagination>
+				<el-pagination class="page" background layout="prev, pager, next" :total="page.total" @current-change="handleCurrentChange">
+				</el-pagination>
+			</div>
+		</el-card>
 	</div>
 </template>
 
 <script>
 import dateFormat from "@/utils/dateFormat"
 export default {
-	name:"BaseTable",
+	name: "BaseTable",
 	data () {
 		return {
 			userList: [],
@@ -89,8 +92,7 @@ export default {
 			],
 			page: {
 				pageNum: 1,
-				pageSize: 10,
-				total: 1
+				pageSize: 10
 			},
 			checkedUserIds: [],
 			actions: ""
@@ -161,16 +163,10 @@ export default {
 </script>
 
 <style lang="scss">
-#table-content {
+#base-table {
 	margin-top: 20px;
-	padding: 20px;
-	background-color: #fff;
 
-	.action {
-		margin-bottom: 20px;
-	}
-
-	.el-pagination {
+	.page {
 		margin-top: 20px;
 		text-align: right;
 	}

@@ -35,7 +35,7 @@ export default {
 	data () {
 		return {
 			count: "",
-			isSpread:false
+			isSpread: false
 		}
 	},
 	methods: {
@@ -48,24 +48,19 @@ export default {
 			}
 		},
 		async getUndone () {
-			try {
-				let result = await this.$api.getUndone()
-				this.count = result
-			} catch (error) {
-				console.log(error);
-			}
+			let res = await this.$api.getUndone()
+			this.count = res
 		},
-		cutSpread(){
-			this.isSpread=this.$bus.$emit("cutSpread")
+		cutSpread () {
+			this.isSpread = this.$bus.$emit("cutSpread")
 		}
-	},
-	computed: {
 	},
 	components: {
 		BreadPage
 	},
 	created () {
 		this.getUndone()
+		
 	}
 }
 </script>

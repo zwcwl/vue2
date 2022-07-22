@@ -5,8 +5,8 @@
 				<el-input v-model="queryForm.roleName" placeholder="请输入角色名称"></el-input>
 			</el-form-item>
 			<el-form-item>
-				<el-button type="primary" @click="onSubmit">查询</el-button>
-				<el-button type="primary" @click="onReset('queryForm')">重置</el-button>
+				<el-button type="primary" @click="querySubmit">查询</el-button>
+				<el-button type="primary" @click="queryReset('queryForm')">重置</el-button>
 			</el-form-item>
 		</el-form>
 	</div>
@@ -24,18 +24,18 @@ export default {
 	},
 	methods: {
 		//点击搜索用户
-		onSubmit () {
+		querySubmit () {
 			this.$bus.$emit("getRole",this.queryForm)
 		},
 
 		//点击重置表单
-		onReset (formName) {
+		queryReset (formName) {
 			this.$refs[formName].resetFields();
 		},
 	},
 	mounted(){
-		this.onSubmit()
-		this.$bus.$on("onSubmit",this.onSubmit)
+		this.querySubmit()
+		this.$bus.$on("querySubmit",this.querySubmit)
 	}
 }
 </script>

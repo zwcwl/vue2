@@ -1,45 +1,29 @@
 <template>
 	<div id="role-manage">
-		<div class="manage-container">
+		<div class="container">
 			<query-form></query-form>
 
-			<table-content :roleList="roleList" :updateRole="updateRole" :page="page"></table-content>
-
-			<dialog-form :roleList="roleList" :updateRole="updateRole"></dialog-form>
+			<base-table></base-table>
 
 			<edit-dialog></edit-dialog>
+
+			<permission-dialog></permission-dialog>
 		</div>
 	</div>
 </template>
 
 <script>
 import QueryForm from './QueryForm.vue'
-import TableContent from './TableContent.vue'
-import DialogForm from './DialogForm.vue'
-import EditDialog from "./EditDialog.vue"
+import BaseTable from './BaseTable.vue'
+import EditDialog from './EditDialog.vue'
+import PermissionDialog from "./PermissionDialog.vue"
 export default {
-	name: "ManageView",
+	name: "Role",
 	components: {
 		QueryForm,
-		TableContent,
-		DialogForm,
-		EditDialog
-	},
-	data(){
-		return {
-			roleList: [],
-			page:{
-				pageNum:1,
-				pageSize:10,
-				total:1
-			}
-		}
-	},
-	methods:{
-		updateRole(res){
-			this.roleList=res.list
-			this.page=res.page
-		}
+		BaseTable,
+		EditDialog,
+		PermissionDialog
 	}
 }
 </script>
@@ -50,7 +34,7 @@ export default {
 	height: 100%;
 	box-sizing: border-box;
 
-	.manage-container {
+	.container {
 		height: 100%;
 		box-sizing: border-box;
 	}

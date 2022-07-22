@@ -1,14 +1,14 @@
 <template>
 	<div class="tree-menu">
-		<template v-for="item in menu">
-			<el-submenu :key="item._id" v-if="item.children && item.children.length > 0 && item.children[0].menuType == 1" :index="item.path">
+		<template v-for="item in menuList">
+			<el-submenu :key="item._id" v-if="item.children.length !== 0" :index="item.path">
 				<template slot="title">
 					<i :class="item.icon"></i>
 					<span slot="title">{{item.menuName}}</span>
 				</template>
-				<tree-menu :menu="item.children"></tree-menu>
+				<tree-menu :menuList="item.children"></tree-menu>
 			</el-submenu>
-			<el-menu-item v-else-if="item.menuType == 1" :index="item.path" v-bind:key="item.menuCode">
+			<el-menu-item v-else :index="item.path" :key="item.path">
 				<i :class="item.icon"></i>
 				<span slot="title">{{item.menuName}}</span>
 			</el-menu-item>
@@ -20,7 +20,7 @@
 export default {
 	name: "TreeMenu",
 	props: {
-		menu: {
+		menuList: {
 			type: Array,
 			default () {
 				return []

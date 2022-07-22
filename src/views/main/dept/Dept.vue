@@ -1,8 +1,8 @@
 <template>
 	<div id="dept-manage">
-		<div class="manage-container">
+		<div class="container">
 			<query-form></query-form>
-			<table-content></table-content>
+			<base-table></base-table>
 			<dialog-form></dialog-form>
 		</div>
 	</div>
@@ -10,13 +10,13 @@
 
 <script>
 import QueryForm from './QueryForm'
-import TableContent from './TableContent'
-import DialogForm from './DialogForm.vue'
+import BaseTable from './BaseTable'
+import DialogForm from './DialogForm'
 export default {
-	name:'DeptManage',
+	name:'Dept',
 	components:{
 		QueryForm,
-		TableContent,
+		BaseTable,
 		DialogForm
 	}
 }
@@ -28,7 +28,7 @@ export default {
 	height: 100%;
 	box-sizing: border-box;
 
-	.manage-container {
+	.container {
 		height: 100%;
 		box-sizing: border-box;
 	}

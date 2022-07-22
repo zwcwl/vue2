@@ -5,7 +5,7 @@
 		</div>
 		<el-menu :default-active="activeUrl" class="el-menu-vertical-demo" :collapse="isSpread" background-color="#545c64"
 			text-color="#fff" router>
-			<tree-menu :menu="menu"></tree-menu>
+			<tree-menu :menuList="menuList"></tree-menu>
 		</el-menu>
 		<div class="spread-shrink" @click="cutSpread">
 			<el-button type="primary" :icon="isSpread ? 'el-icon-s-unfold' : 'el-icon-s-fold'"></el-button>
@@ -20,11 +20,9 @@ export default {
 	data () {
 		return {
 			isSpread: false,
-			menu: [],
+			menuList: [],
 			activeUrl: ""
 		}
-	},
-	computed: {
 	},
 	methods: {
 		cutSpread () {
@@ -32,12 +30,8 @@ export default {
 			return this.isSpread
 		},
 		async getMenu () {
-			try {
-				let menu = await this.$api.getMenu()
-				this.menu = menu
-			} catch (error) {
-				console.log(error);
-			}
+			let res = await this.$api.getMenu()
+			this.menuList = res
 		}
 	},
 	created () {

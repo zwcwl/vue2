@@ -1,6 +1,6 @@
 <template>
 	<div id="menu-manage">
-		<div class="manage-container">
+		<div class="container">
 			<query-form></query-form>
 
 			<base-table></base-table>
@@ -15,7 +15,7 @@ import QueryForm from './QueryForm.vue'
 import BaseTable from './BaseTable.vue'
 import DialogForm from './DialogForm.vue'
 export default {
-	name: "ManageView",
+	name: "Menu",
 	components: {
 		QueryForm,
 		BaseTable,
@@ -30,7 +30,7 @@ export default {
 	height: 100%;
 	box-sizing: border-box;
 
-	.manage-container {
+	.container {
 		height: 100%;
 		box-sizing: border-box;
 	}

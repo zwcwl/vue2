@@ -1,31 +1,34 @@
 <template>
-	<div id="table-content">
-		<div class="action">
-			<el-button type="primary" @click="menuOpenDialog('create')">新增</el-button>
-		</div>
+	<div id="base-table">
+		<el-card class="box-card">
+			<div slot="header" class="clearfix">
+				<el-button type="primary" @click="menuOpenDialog('create')">新增</el-button>
+			</div>
+			<div class="table">
+				<el-table ref="multipleTable" :data="menuList" tooltip-effect="dark" style="width: 100%" stripe border
+					row-key="_id">
 
-		<el-table ref="multipleTable" :data="menuList" tooltip-effect="dark" style="width: 100%" stripe border
-			row-key="_id">
+					<el-table-column v-for="item in columns" :key="item.prop" :label="item.label" :prop="item.prop"
+						:formatter="item.formatter" :width="item.width">
+					</el-table-column>
 
-			<el-table-column v-for="item in columns" :key="item.prop" :label="item.label" :prop="item.prop"
-				:formatter="item.formatter" :width="item.width">
-			</el-table-column>
-
-			<el-table-column label="操作" width="220px">
-				<template slot-scope="scope">
-					<el-button size="mini" type="primary" @click="menuOpenDialog('create', scope.row)">新增</el-button>
-					<el-button size="mini" type="info" @click="menuOpenDialog('update', scope.row)">编辑</el-button>
-					<el-button size="mini" type="danger" @click="handleDel(scope.row._id)">删除</el-button>
-				</template>
-			</el-table-column>
-		</el-table>
+					<el-table-column label="操作" width="220px">
+						<template slot-scope="scope">
+							<el-button size="mini" type="primary" @click="menuOpenDialog('create', scope.row)">新增</el-button>
+							<el-button size="mini" type="info" @click="menuOpenDialog('update', scope.row)">编辑</el-button>
+							<el-button size="mini" type="danger" @click="handleDel(scope.row._id)">删除</el-button>
+						</template>
+					</el-table-column>
+				</el-table>
+			</div>
+		</el-card>
 	</div>
 </template>
 
 <script>
 import dateFormat from "@/utils/dateFormat"
 export default {
-	name: "TableContent",
+	name: "BaseTable",
 	data () {
 		return {
 			columns: [
@@ -37,7 +40,7 @@ export default {
 				{
 					label: "图标",
 					prop: "icon",
-					width: "80px"
+					width: "180px"
 				},
 				{
 					label: "菜单类型",
@@ -104,7 +107,6 @@ export default {
 		async getMenu (queryForm) {
 			let res = await this.$api.getMenu(queryForm)
 			this.menuList = res
-			console.log(this);
 		},
 
 		//点击显示添加表单
@@ -119,18 +121,8 @@ export default {
 </script>
 
 <style lang="scss">
-#table-content {
+#base-table {
 	margin-top: 20px;
-	padding: 20px;
-	background-color: #fff;
 
-	.action {
-		margin-bottom: 20px;
-	}
-
-	.el-pagination {
-		margin-top: 20px;
-		text-align: right;
-	}
 }
 </style>

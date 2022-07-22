@@ -1,5 +1,5 @@
 <template>
-	<div id="card">
+	<div id="base-table">
 		<el-card class="box-card" shadow="never">
 			<div slot="header" class="clearfix">
 				<el-button type="primary" @click="handleCreate('create')">添加</el-button>
@@ -19,7 +19,7 @@
 					</el-table-column>
 				</el-table>
 
-				<el-pagination background layout="prev, pager, next" :total="page.total" @current-change="handleCurrentChange">
+				<el-pagination class="page" background layout="prev, pager, next" :total="page.total" @current-change="handleCurrentChange">
 				</el-pagination>
 			</div>
 		</el-card>
@@ -60,7 +60,7 @@ export default {
 			this.$bus.$emit("openDialog",state,row)
 		},
 		async getDept(queryForm = {}){
-			let params={...queryForm,...this.page}
+			let params={...queryForm}
 			let res= await this.$api.getDept(params)
 			this.deptList=res
 		},
@@ -79,10 +79,10 @@ export default {
 </script>
 
 <style lang="scss">
-#card {
+#base-table {
 	margin-top: 20px;
 
-	.el-pagination {
+	.page {
 		margin-top: 20px;
 		text-align: right;
 	}

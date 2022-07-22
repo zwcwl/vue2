@@ -6,7 +6,7 @@ export default {
         return request.get(
             "/role",
             params,
-            { mock: true }
+            { mock: false }
         )
     },
 
@@ -20,7 +20,7 @@ export default {
     },
 
     //删除角色
-    deleteRole(params = []) {
+    delRole(params = []) {
         return request.delete(
             "/role",
             params,

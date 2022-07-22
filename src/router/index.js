@@ -82,7 +82,7 @@ let routes = [
 		meta: {
 			pathName: "登入",
 		},
-		component: () => import("@/views/main/login/Login")
+		component: () => import("@/views/login/Login")
 	},
 
 	//未匹配的路由显示的页面
