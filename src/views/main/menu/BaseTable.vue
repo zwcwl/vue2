@@ -96,7 +96,7 @@ export default {
 			try {
 				console.log(id);
 				await this.$api.delMenu(id)
-				this.$bus.$emit("onSubmit")
+				this.$bus.$emit("querySubmit")
 				this.$message.success("删除成功");
 			} catch (error) {
 				this.$message.success("删除失败");

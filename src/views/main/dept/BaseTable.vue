@@ -59,11 +59,12 @@ export default {
 		deptOpenDialog(dialogType,row){
 			this.$bus.$emit("deptOpenDialog",dialogType,row)
 		},
-		async getDept(queryForm = {}){
-			let params={...queryForm}
-			let res= await this.$api.getDept(params)
+
+		async getDept(queryForm){
+			let res= await this.$api.getDept(queryForm)
 			this.deptList=res
 		},
+		
 		handleCurrentChange(val){
 
 		},
@@ -72,8 +73,8 @@ export default {
 			await this.$api.delDept(id)
 		},
 	},
-	mounted(){
-		this.getDept()
+	created(){
+		this.$bus.$on("getDept",this.getDept)
 	}
 }
 </script>

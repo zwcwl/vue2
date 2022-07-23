@@ -3,7 +3,7 @@ import request from "@/utils/request"
 export default {
     //获取部门
     getDept(params = {}) {
-        return request.get("/dept", params, { mock: true })
+        return request.get("/dept", params, { mock: false })
     },
 
     //添加部门
@@ -20,7 +20,7 @@ export default {
         return request.put(
             "/dept",
             params,
-            { mock: true }
+            { mock: false }
         )
     },
 
@@ -29,7 +29,7 @@ export default {
         return request.delete(
             "/dept",
             params,
-            { mock: true }
+            { mock: false }
         )
     }
 }

@@ -61,6 +61,7 @@ export default {
 			this.dialogVisible = false
 			this.$refs.deptDialogform.resetFields()
 		},
+
 		deptOpenDialog (dialogType, row) {
 			this.dialogType = dialogType
 			this.dialogVisible = true
@@ -78,6 +79,7 @@ export default {
 				await this.$api.postDept(this.deptDialogform)
 			}
 			this.closeDialog()
+			this.$bus.$emit("handleSubmit")
 		},
 
 		async getDept(){
@@ -98,7 +100,7 @@ export default {
 	},
 	mounted () {
 		this.$bus.$on("deptOpenDialog", this.deptOpenDialog)
-		this.getDept()
+		// this.getDept()
 		this.getUserAll()
 	}
 }

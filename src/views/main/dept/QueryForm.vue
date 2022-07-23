@@ -24,11 +24,15 @@ export default {
 	},
 	methods: {
 		handleSubmit(){
-
+			this.$bus.$emit("getDept",this.queryForm)
 		},
 		handleReset(){
 			this.$refs.deptForm.resetFields()
 		}
+	},
+	mounted(){
+		this.handleSubmit()
+		this.$bus.$on("handleSubmit",this.handleSubmit)
 	}
 }
 </script>
