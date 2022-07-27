@@ -1,29 +1,55 @@
-let storage= {
-	getItem(key,item){
-			let obj=this.getAll(key);
-			return obj[item];
+//localStorage：本地存储，本地存储可以由多个存储项组成
+
+//item:代表本地存储的项
+
+//key：代表每一项的键
+
+let storage = {
+	//获取本地存储的指定项
+	getItem (item) {
+		return JSON.parse(window.localStorage.getItem(item) || "{}");
 	},
-	setItem(key,data){
-			let obj=this.getAll();
-			window.localStorage.setItem(key,JSON.stringify({...data,...obj}));
-			return "添加成功";
+	//获取指定项的指定key值
+	getItemKey (item, key) {
+		let obj = this.getItem(item);
+		return obj[key];
 	},
-	replaceItem(key,data){
-			window.localStorage.setItem(key,JSON.stringify(data));
-			return "替换成功";
+
+	//设置指定项
+	setItem (item, val) {
+		window.localStorage.setItem(item, JSON.stringify(val));
 	},
-	getAll(key){
-			return JSON.parse(window.localStorage.getItem(key) || "{}");
+	//设置指定项的指定key值
+	setItemKey (item, key, val) {
+		let obj = this.getItem(item);
+		obj[key]=val
+		window.localStorage.setItem(item, JSON.stringify(obj));
 	},
-	removeItem(key,item){
-			let obj=this.getAll();
-			delete obj[item];
-			window.localStorage.setItem(key,JSON.stringify(obj));
-			return "删除成功"
+
+	//获取所有的项
+	getAll () {
+		// return JSON.parse(window.localStorage.getItem(key) || "{}");
+		let keys=Object.keys(localStorage)
+		let obj={}
+		keys.forEach(item=>{
+			obj[item]=this.getItem(item)
+		})
+		return obj
 	},
-	removeKey(key){
-			window.localStorage.removeItem(key);
-			return "删除成功"
+	//清除所有项
+	clear(){
+		window.localStorage.clear()
+	},
+
+	//删除指定项
+	delItem (item) {
+		window.localStorage.removeItem(item);
+	},
+	//删除指定项的指定key值
+	delItemKey (item,key) {
+		let obj=this.getItem(item)
+		delete obj[key]
+		window.localStorage.setItem(item,JSON.stringify(obj))
 	}
 }
 

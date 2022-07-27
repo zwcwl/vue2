@@ -1,6 +1,6 @@
 <template>
 	<div id="base-table">
-		<el-card class="box-card">
+		<el-card class="box-card" shadow="never">
 			<div slot="header" class="clearfix">
 				<el-button type="primary" @click="menuOpenDialog('create')">新增</el-button>
 			</div>

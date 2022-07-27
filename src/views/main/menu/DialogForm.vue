@@ -14,8 +14,8 @@
 
 				<el-form-item label="菜单类型" prop="menuType">
 					<el-radio-group v-model="menuDialogForm.menuType">
-						<el-radio :label="1">菜单</el-radio>
-						<el-radio :label="2">按钮</el-radio>
+						<el-radio :label="1">目录</el-radio>
+						<el-radio :label="2">菜单</el-radio>
 					</el-radio-group>
 				</el-form-item>
 

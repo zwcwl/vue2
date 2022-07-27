@@ -35,7 +35,7 @@ let instance = axios.create({
 instance.interceptors.request.use(
 	config => {
 		//将token设置到请求头
-		let result = storage.getItem("TOKEN", "token")
+		let result = storage.getItemKey("userInfo", "token")
 		if (result) {
 			config.headers.authorization = result
 		}

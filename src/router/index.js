@@ -104,7 +104,7 @@ let router = new VueRouter({
 //每次路由跳转时，都进行验证token是否正确
 let auth = {
 	token () {
-		return JSON.stringify(storage.getAll("TOKEN")) === "{}"
+		return JSON.stringify(storage.getAll("userInfo")) === "{}"
 	}
 }
 

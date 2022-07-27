@@ -12,11 +12,11 @@ let state={
 let mutations={
 	addUserInfo(state,val){
 		state.userInfo=val
-		storage.replaceItem("TOKEN",val)
+		storage.setItem("userInfo",val)
 	},
 	delUserInfo(state){
 		state.userInfo=[]
-		storage.removeKey("TOKEN")
+		storage.delItem("userInfo")
 	}
 }
 
