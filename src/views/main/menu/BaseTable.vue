@@ -2,7 +2,7 @@
 	<div id="base-table">
 		<el-card class="box-card" shadow="never">
 			<div slot="header" class="clearfix">
-				<el-button type="primary" @click="menuOpenDialog('create')">新增</el-button>
+				<el-button type="primary" @click="menuOpenDialog">新增</el-button>
 			</div>
 			<div class="table">
 				<el-table ref="multipleTable" :data="menuList" tooltip-effect="dark" style="width: 100%" stripe border

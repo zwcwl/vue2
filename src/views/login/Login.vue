@@ -40,7 +40,6 @@ export default {
 				await this.$refs[formName].validate()
 				let result = await this.$api.userLogin(this.user)
 				this.$message.success("登入成功")
-				
 				this.$store.commit("addUserInfo", result)
 				this.$router.replace("/")
 

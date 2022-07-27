@@ -31,6 +31,7 @@ export default {
 		},
 		async getMenu () {
 			let res = await this.$api.getMenu()
+			this.$store.commit("addMenu",res)
 			this.menuList = res
 		}
 	},

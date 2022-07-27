@@ -58,7 +58,7 @@
 <script>
 export default {
 	name: "DialogForm",
-	data () {
+	data() {
 		return {
 			dialogVisible: false,
 			dialogType: "",
@@ -76,12 +76,12 @@ export default {
 					required: true, message: '请输入菜单名称', trigger: 'blur'
 				}
 			},
-			menuList:[]
+			menuList: []
 		}
 	},
 	methods: {
 		//判断对话框的类型：编辑、局部新增、全局新增
-		menuOpenDialog (dialogType, row) {
+		menuOpenDialog(dialogType, row) {
 			this.dialogVisible = true
 			this.dialogType = dialogType
 			if (dialogType == "create") {
@@ -95,13 +95,13 @@ export default {
 		},
 
 		//dialog弹窗关闭触发的事件函数
-		closeDialog () {
+		closeDialog() {
 			this.dialogVisible = false
 			this.$refs.menuDialogForm.resetFields();
 		},
 
 		//提交对话框
-		submitDialog () {
+		submitDialog() {
 			let { dialogType, menuDialogForm } = this
 			this.$refs.menuDialogForm.validate(async (valid) => {
 				if (!valid) return
@@ -117,9 +117,11 @@ export default {
 			})
 		}
 	},
-	created () {
+	created() {
 		this.$bus.$on("menuOpenDialog", this.menuOpenDialog)
-		this.menuList=this.$bus.menuList
+		setTimeout(()=>{
+			this.menuList = this.$store.state.menu.menuList
+		},1000)
 	}
 }
 </script>
