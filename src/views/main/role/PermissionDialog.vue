@@ -29,7 +29,7 @@ export default {
 			dialogVisible: false,
 			curRoleId: "",
 			curRoleName: "",
-			actionMap: {}
+			power: {}
 		}
 	},
 	methods: {
@@ -80,7 +80,7 @@ export default {
 		},
 
 		getActionMap (list) {
-			let actionMap = {}
+			let power = {}
 			function deep (arr) {
 				while (arr.length) {
 					let item = arr.pop()
@@ -94,7 +94,7 @@ export default {
 			}
 
 			deep(JSON.parse(JSON.stringify(list)))
-			this.actionMap = actionMap
+			this.power = power
 		}
 	},
 	created () {

@@ -18,9 +18,6 @@
 						</template>
 					</el-table-column>
 				</el-table>
-
-				<el-pagination class="page" background layout="prev, pager, next" :total="page.total" @current-change="handleCurrentChange">
-				</el-pagination>
 			</div>
 		</el-card>
 	</div>
@@ -63,10 +60,6 @@ export default {
 		async getDept(queryForm){
 			let res= await this.$api.getDept(queryForm)
 			this.deptList=res
-		},
-		
-		handleCurrentChange(val){
-
 		},
 		
 		async handleDel(id){

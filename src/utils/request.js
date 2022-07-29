@@ -77,8 +77,7 @@ instance.interceptors.response.use(
 				//TOKEN认证失败或过期,请重新登入
 			} else if (code === CODE.AUTH_ERROR) {
 				Message.error(msg || "TOKEN认证失败或过期,请重新登入")
-				console.dir(vueRouter);
-				storage.removeKey("TOKEN")
+				storage.delItem("userInfo")
 				vueRouter.replace("/user/login")
 
 				//网络请求异常，请稍后重试

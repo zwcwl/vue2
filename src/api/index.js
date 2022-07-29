@@ -3,6 +3,7 @@ import user from "./user"
 import menu from "./menu"
 import role from "./role"
 import dept from "./dept"
+import jurisdiction from "./power"
 
 
 
@@ -28,6 +29,7 @@ export default {
 	...menu,
 	...role,
 	...dept,
+	...jurisdiction,
 	getUndone,
 	putPermission
 }

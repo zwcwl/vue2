@@ -17,7 +17,6 @@ let mutations={
     }
 }
 
-
 export default {
     state,
     mutations,

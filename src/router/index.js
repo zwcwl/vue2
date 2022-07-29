@@ -32,10 +32,10 @@ let routes = [
 			//用户管理页面
 			{
 				path: "system/user",
-				name: "ManageView",
+				name: "User",
 				meta: {
 					requestAuth: true,
-					pathName: "用户管理"
+					pathName: "用户"
 				},
 				component: () => import("@/views/main/user/User")
 			},
@@ -43,10 +43,10 @@ let routes = [
 			//菜单管理页面
 			{
 				path: "system/menu",
-				name: "MenuManage",
+				name: "Menu",
 				meta: {
 					requestAuth: true,
-					pathName: "菜单管理"
+					pathName: "菜单"
 				},
 				component: () => import("@/views/main/menu/Menu")
 			},
@@ -54,10 +54,10 @@ let routes = [
 			//角色管理页面
 			{
 				path: "system/role",
-				name: "RoleManage",
+				name: "Role",
 				meta: {
 					requestAuth: true,
-					pathName: "角色管理"
+					pathName: "角色"
 				},
 				component: () => import("@/views/main/role/Role")
 			},
@@ -65,12 +65,23 @@ let routes = [
 			//部门管理页面
 			{
 				path: "system/dept",
-				name: "DeptManage",
+				name: "Dept",
 				meta: {
 					requestAuth: true,
-					pathName: "角色管理"
+					pathName: "部门"
 				},
 				component: () => import("@/views/main/dept/Dept")
+			},
+
+			//权限管理页面
+			{
+				path: "system/power",
+				name: "Power",
+				meta: {
+					requestAuth: true,
+					pathName: "权限"
+				},
+				component: () => import("@/views/main/power/Power")
 			}
 		]
 	},
@@ -88,11 +99,11 @@ let routes = [
 	//未匹配的路由显示的页面
 	{
 		path: "*",
-		name: "NotView",
+		name: "404",
 		meta: {
 			pathName: "首页",
 		},
-		component: () => import("@/views/404/NotView")
+		component: () => import("@/views/404/404")
 	}
 ]
 

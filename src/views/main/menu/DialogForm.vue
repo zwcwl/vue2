@@ -22,20 +22,23 @@
 				<el-form-item label="菜单名称" prop="menuName">
 					<el-input v-model="menuDialogForm.menuName" placeholder="请输入菜单名称"></el-input>
 				</el-form-item>
+				
+				<el-form-item label="菜单权限" prop="power" v-show="menuDialogForm.menuType == 2">
+					<el-select v-model="menuDialogForm.power" placeholder="请选择权限" multiple style="width: 100%">
+						<el-option v-for="power in powerList" :key="power._id" :label="power.powerName" :value="power._id">
+						</el-option>
+					</el-select>
+				</el-form-item>
 
-				<el-form-item label="菜单图标" prop="icon" v-show="menuDialogForm.menuType == 1">
+				<el-form-item label="菜单图标" prop="icon">
 					<el-input v-model="menuDialogForm.icon" placeholder="请输入菜单图标"></el-input>
 				</el-form-item>
 
-				<el-form-item label="路由地址" prop="path" v-show="menuDialogForm.menuType == 1">
+				<el-form-item label="路由地址" prop="path">
 					<el-input v-model="menuDialogForm.path" placeholder="请输入路由地址"></el-input>
 				</el-form-item>
 
-				<el-form-item label="权限标识" prop="menuCode">
-					<el-input v-model="menuDialogForm.menuCode" placeholder="请输入权限标识"></el-input>
-				</el-form-item>
-
-				<el-form-item label="组件路径" prop="component" v-show="menuDialogForm.menuType == 1">
+				<el-form-item label="组件路径" prop="component">
 					<el-input v-model="menuDialogForm.component" placeholder="请输入组件路径"></el-input>
 				</el-form-item>
 
@@ -49,7 +52,7 @@
 
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="dialogVisible = false">取 消</el-button>
-				<el-button dialogType="primary" @click="submitDialog">确 定</el-button>
+				<el-button @click="submitDialog">确 定</el-button>
 			</div>
 		</el-dialog>
 	</div>
@@ -58,13 +61,14 @@
 <script>
 export default {
 	name: "DialogForm",
-	data() {
+	data () {
 		return {
 			dialogVisible: false,
 			dialogType: "",
 			menuDialogForm: {
 				parentId: [null],
 				menuState: 1,
+				power:[],
 				menuType: 1,
 				menuName: "",
 				path: "",
@@ -76,12 +80,13 @@ export default {
 					required: true, message: '请输入菜单名称', trigger: 'blur'
 				}
 			},
-			menuList: []
+			menuList: [],
+			powerList:[]
 		}
 	},
 	methods: {
 		//判断对话框的类型：编辑、局部新增、全局新增
-		menuOpenDialog(dialogType, row) {
+		menuOpenDialog (dialogType, row) {
 			this.dialogVisible = true
 			this.dialogType = dialogType
 			if (dialogType == "create") {
@@ -95,13 +100,13 @@ export default {
 		},
 
 		//dialog弹窗关闭触发的事件函数
-		closeDialog() {
+		closeDialog () {
 			this.dialogVisible = false
 			this.$refs.menuDialogForm.resetFields();
 		},
 
 		//提交对话框
-		submitDialog() {
+		submitDialog () {
 			let { dialogType, menuDialogForm } = this
 			this.$refs.menuDialogForm.validate(async (valid) => {
 				if (!valid) return
@@ -115,13 +120,19 @@ export default {
 				this.closeDialog()
 				this.$bus.$emit("querySubmit")
 			})
+		},
+
+		async getPower(){
+			let res=await this.$api.getPower()
+			this.powerList=res
 		}
 	},
-	created() {
+	created () {
 		this.$bus.$on("menuOpenDialog", this.menuOpenDialog)
-		setTimeout(()=>{
+		setTimeout(() => {
 			this.menuList = this.$store.state.menu.menuList
-		},1000)
+		}, 1000)
+		this.getPower()
 	}
 }
 </script>
