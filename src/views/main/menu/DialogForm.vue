@@ -16,6 +16,7 @@
 					<el-radio-group v-model="menuDialogForm.menuType">
 						<el-radio :label="1">目录</el-radio>
 						<el-radio :label="2">菜单</el-radio>
+						<el-radio :label="3">按钮</el-radio>
 					</el-radio-group>
 				</el-form-item>
 
@@ -23,11 +24,11 @@
 					<el-input v-model="menuDialogForm.menuName" placeholder="请输入菜单名称"></el-input>
 				</el-form-item>
 
-				<el-form-item label="菜单图标" prop="icon" v-show="menuDialogForm.menuType == 1">
+				<el-form-item label="菜单图标" prop="icon" v-show="menuDialogForm.menuType !== 3">
 					<el-input v-model="menuDialogForm.icon" placeholder="请输入菜单图标"></el-input>
 				</el-form-item>
 
-				<el-form-item label="路由地址" prop="path" v-show="menuDialogForm.menuType == 1">
+				<el-form-item label="路由地址" prop="path" v-show="menuDialogForm.menuType !== 3">
 					<el-input v-model="menuDialogForm.path" placeholder="请输入路由地址"></el-input>
 				</el-form-item>
 
@@ -35,7 +36,7 @@
 					<el-input v-model="menuDialogForm.menuCode" placeholder="请输入权限标识"></el-input>
 				</el-form-item>
 
-				<el-form-item label="组件路径" prop="component" v-show="menuDialogForm.menuType == 1">
+				<el-form-item label="组件路径" prop="component" v-show="menuDialogForm.menuType !== 3">
 					<el-input v-model="menuDialogForm.component" placeholder="请输入组件路径"></el-input>
 				</el-form-item>
 

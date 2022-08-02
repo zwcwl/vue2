@@ -14,7 +14,7 @@
 
 					<el-table-column label="操作" width="220px">
 						<template slot-scope="scope">
-							<el-button size="mini" type="primary" @click="menuOpenDialog('create', scope.row)">新增</el-button>
+							<el-button size="mini" type="primary" @click="menuOpenDialog('create', scope.row)" v-if="scope.row.menuType !== 3">新增</el-button>
 							<el-button size="mini" type="info" @click="menuOpenDialog('update', scope.row)">编辑</el-button>
 							<el-button size="mini" type="danger" @click="handleDel(scope.row._id)">删除</el-button>
 						</template>

@@ -68,7 +68,7 @@ let routes = [
 				name: "DeptManage",
 				meta: {
 					requestAuth: true,
-					pathName: "角色管理"
+					pathName: "部门管理"
 				},
 				component: () => import("@/views/main/dept/Dept")
 			}
